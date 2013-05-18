@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>IScirocco</title><link href="/" rel="alternate"></link><link href="http://www.isciro.com/feeds/misc.atom.xml" rel="self"></link><id>/</id><updated>2013-03-06T16:21:00+08:00</updated><entry><title>Markdown test</title><link href="/markdown-test.html" rel="alternate"></link><updated>2013-03-06T16:21:00+08:00</updated><author><name>DennyW</name></author><id>tag:,2013-03-06:markdown-test.html</id><summary type="html">&lt;h1&gt;This is a Markdown test.&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>iScirocco</title><link href="/" rel="alternate"></link><link href="http://www.isciro.com/feeds/misc.atom.xml" rel="self"></link><id>/</id><updated>2013-03-06T16:21:00+08:00</updated><entry><title>Markdown test</title><link href="/markdown-test.html" rel="alternate"></link><updated>2013-03-06T16:21:00+08:00</updated><author><name>DennyW</name></author><id>tag:,2013-03-06:markdown-test.html</id><summary type="html">&lt;h1&gt;This is a Markdown test.&lt;/h1&gt;
 &lt;h4&gt;by &lt;a href="http://www.marukohome.com"&gt;DennyW&lt;/a&gt;&lt;/h4&gt;
 &lt;hr /&gt;
 &lt;h1&gt;This is H1&lt;/h1&gt;
