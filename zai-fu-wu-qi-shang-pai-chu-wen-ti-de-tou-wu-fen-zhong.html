@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>在服务器上排除问题的头五分钟</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link rel="stylesheet" href="./theme/css/bootstrap.css" type="text/css" />
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+	
+	.tag-1 {
+		font-size: 13pt;
+	}
+	
+	.tag-2 {
+		font-size: 10pt;
+	}
+	
+	.tag-2 {
+		font-size: 8pt;
+	}
+
+	.tag-4 {
+		font-size: 6pt;
+	}
+	
+    </style>
+    <link href="./theme/css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="./theme/css/font-awesome.css" rel="stylesheet">
+	
+    <link href="./theme/css/pygments.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="./theme/images/favicon.ico">
+    <link rel="apple-touch-icon" href="./theme/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="./theme/images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="./theme/images/apple-touch-icon-114x114.png">
+
+    <link href="./" type="application/atom+xml" rel="alternate" title="iScirocco ATOM Feed" />
+    
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="./index.html">iScirocco </a>
+          <div class="nav-collapse">
+            <ul class="nav">
+                                                          <li><a href="./pages/about-me.html">About me</a></li>
+              			  <li class="divider-vertical"></li>
+                                              <li >
+                    <a href="./category/articles.html">
+						<i class="icon-folder-open icon-large"></i>articles
+					</a>
+                  </li>
+                                <li >
+                    <a href="./category/life.html">
+						<i class="icon-folder-open icon-large"></i>life
+					</a>
+                  </li>
+                                <li class="active">
+                    <a href="./category/tech.html">
+						<i class="icon-folder-open icon-large"></i>tech
+					</a>
+                  </li>
+              			  
+			  <ul class="nav pull-right">
+				<li><a href="./archives.html"><i class="icon-th-list"></i>Archives</a></li>
+			  </ul>
+			  
+            </ul>
+            <!--<p class="navbar-text pull-right">Logged in as <a href="#">username</a></p>-->
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="span9" id="content">
+            <section id="content">    
+	<article>
+		<header>
+			<h1>
+				<a href=""
+					rel="bookmark" 
+					title="Permalink to 在服务器上排除问题的头五分钟">
+					在服务器上排除问题的头五分钟 
+				</a>
+				 
+			</h1> 
+		</header>
+		<div class="entry-content">
+		<div class="well">
+			<footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2013-05-02T11:20:00">
+	<i class="icon-calendar"></i>Thu 02 May 2013
+</abbr>
+<span class="label">By</span>
+<a href="./author/dennyw.html"><i class="icon-user"></i>DennyW</a>
+<span class="label">Category</span>
+<a href="./category/tech.html"><i class="icon-folder-open"></i>tech</a>. 
+
+	
+</footer><!-- /.post-info -->		</div>
+		<blockquote>
+<p>前一阵在<a href="https://news.ycombinator.com/">Hacker News</a>上看到一篇文章，写的是在服务器上排故的头五分钟工程师应该做的一些基本检测。 有的时候在问题出现的时候的确是会有些手忙脚乱，遵循一定的检测模式，的确会有助于整理思路，找出问题的根源所在。 最近在<a href="http://news.dbanotes.net/news">Startup News</a>看到有人把这篇文章翻译成了中文， 转载到这里以便日后查阅。<a href="http://devo.ps/blog/2013/03/06/troubleshooting-5minutes-on-a-yet-unknown-box.html">原文链接</a></p>
+</blockquote>
+<p>我们团队为上一家公司承担运维、优化和扩展工作的时候，我们碰到了各种不同规模的性能很差的系统和基础设备（大型系统居多，比如CNN或者世界银行的系统）。要是再赶上修复时间紧、奇葩的技术平台、缺少信息和文档，基本上这过程都会惨痛到让我们留下深刻的记忆。</p>
+<p>遇到服务器故障，问题出现的原因很少可以一下就想到。我们基本上都会从以下步骤入手：</p>
+<p><strong>一、尽可能搞清楚问题的前因后果</strong></p>
+<p>不要一下子就扎到服务器前面，你需要先搞明白对这台服务器有多少已知的情况，还有故障的具体情况。不然你很可能就是在无的放矢。</p>
+<p>必须搞清楚的问题有：</p>
+<p>故障的表现是什么？无响应？报错？
+故障是什么时候发现的？
+故障是否可重现？
+有没有出现的规律（比如每小时出现一次）
+最后一次对整个平台进行更新的内容是什么（代码、服务器等）？
+故障影响的特定用户群是什么样的(已登录的, 退出的, 某个地域的…)?
+基础架构（物理的、逻辑的）的文档是否能找到?
+是否有监控平台可用? （比如Munin、Zabbix、 Nagios、 New Relic… 什么都可以）
+是否有日志可以查看?. （比如Loggly、Airbrake、 Graylog…）
+最后两个是最方便的信息来源，不过别抱太大希望，基本上它们都不会有。只能再继续摸索了。</p>
+<p><strong>二、有谁在?</strong></p>
+<div class="codehilite"><pre><span class="err">$</span> <span class="n">w</span>
+<span class="err">$</span> <span class="n">last</span>
+</pre></div>
+
+
+<p>用这两个命令看看都有谁在线，有哪些用户访问过。这不是什么关键步骤，不过最好别在其他用户正干活的时候来调试系统。有道是一山不容二虎嘛。（One cook in the kitchen is enough.）</p>
+<p><strong>三、之前发生了什么?</strong></p>
+<div class="codehilite"><pre><span class="err">$</span> <span class="n">history</span>
+</pre></div>
+
+
+<p>查看一下之前服务器上执行过的命令。看一下总是没错的，加上前面看的谁登录过的信息，应该有点用。另外作为admin要注意，不要利用自己的权限去侵犯别人的隐私哦。</p>
+<p>到这里先提醒一下，等会你可能会需要更新 <code>HISTTIMEFORMAT</code> 环境变量来显示这些命令被执行的时间。对要不然光看到一堆不知道啥时候执行的命令，同样会令人抓狂的。</p>
+<p><strong>四、现在在运行的进程是啥?</strong></p>
+<div class="codehilite"><pre><span class="err">$</span> <span class="n">pstree</span> <span class="o">-</span><span class="n">a</span>
+<span class="err">$</span> <span class="n">ps</span> <span class="n">aux</span>
+</pre></div>
+
+
+<p>这都是查看现有进程的。 <code>ps aux</code> 的结果比较杂乱， <code>pstree -a</code> 的结果比较简单明了，可以看到正在运行的进程及相关用户。</p>
+<p><strong>五、监听的网络服务</strong></p>
+<div class="codehilite"><pre><span class="err">$</span> <span class="n">netstat</span> <span class="o">-</span><span class="n">ntlp</span>
+<span class="err">$</span> <span class="n">netstat</span> <span class="o">-</span><span class="n">nulp</span>
+<span class="err">$</span> <span class="n">netstat</span> <span class="o">-</span><span class="n">nxlp</span>
+</pre></div>
+
+
+<p>我一般都分开运行这三个命令，不想一下子看到列出一大堆所有的服务。<code>netstat -nalp</code>倒也可以。不过我绝不会用 <code>numeric</code> 选项 （鄙人一点浅薄的看法：IP 地址看起来更方便）。</p>
+<p>找到所有正在运行的服务，检查它们是否应该运行。查看各个监听端口。在<code>netstat</code>显示的服务列表中的PID 和 <code>ps aux</code> 进程列表中的是一样的。</p>
+<p>如果服务器上有好几个Java或者Erlang什么的进程在同时运行，能够按PID分别找到每个进程就很重要了。</p>
+<p>通常我们建议每台服务器上运行的服务少一点，必要时可以增加服务器。如果你看到一台服务器上有三四十个监听端口开着，那还是做个记录，回头有空的时候清理一下，重新组织一下服务器。</p>
+<p><strong>六、CPU 和内存</strong></p>
+<div class="codehilite"><pre><span class="err">$</span> <span class="n">free</span> <span class="o">-</span><span class="n">m</span>
+<span class="err">$</span> <span class="n">uptime</span>
+<span class="err">$</span> <span class="n">top</span>
+<span class="err">$</span> <span class="n">htop</span>
+</pre></div>
+
+
+<p>注意以下问题:</p>
+<p>还有空余的内存吗? 服务器是否正在内存和硬盘之间进行swap?
+还有剩余的CPU吗? 服务器是几核的? 是否有某些CPU核负载过多了?
+服务器最大的负载来自什么地方? 平均负载是多少?</p>
+<p><strong>七、硬件</strong></p>
+<div class="codehilite"><pre><span class="err">$</span> <span class="n">lspci</span>
+<span class="err">$</span> <span class="n">dmidecode</span>
+<span class="err">$</span> <span class="n">ethtool</span>
+</pre></div>
+
+
+<p>有很多服务器还是裸机状态，可以看一下：</p>
+<p>找到RAID 卡 (是否带BBU备用电池?)、 CPU、空余的内存插槽。根据这些情况可以大致了解硬件问题的来源和性能改进的办法。
+网卡是否设置好? 是否正运行在半双工状态? 速度是10MBps? 有没有 TX/RX 报错?</p>
+<p><strong>八、IO 性能</strong></p>
+<div class="codehilite"><pre><span class="err">$</span> <span class="n">iostat</span> <span class="o">-</span><span class="n">kx</span> <span class="mi">2</span>
+<span class="err">$</span> <span class="n">vmstat</span> <span class="mi">2</span> <span class="mi">10</span>
+<span class="err">$</span> <span class="n">mpstat</span> <span class="mi">2</span> <span class="mi">10</span>
+<span class="err">$</span> <span class="n">dstat</span> <span class="o">--</span><span class="n">top</span><span class="o">-</span><span class="n">io</span> <span class="o">--</span><span class="n">top</span><span class="o">-</span><span class="n">bio</span>
+</pre></div>
+
+
+<p>这些命令对于调试后端性能非常有用。</p>
+<p>检查磁盘使用量：服务器硬盘是否已满?
+是否开启了swap交换模式 (si/so)?
+CPU被谁占用：系统进程? 用户进程? 虚拟机?
+<code>dstat</code> 是我的最爱。用它可以看到谁在进行 IO： 是不是MySQL吃掉了所有的系统资源? 还是你的PHP进程?</p>
+<p><strong>九、挂载点 和 文件系统</strong></p>
+<div class="codehilite"><pre><span class="err">$</span> <span class="n">mount</span>
+<span class="err">$</span> <span class="n">cat</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">fstab</span>
+<span class="err">$</span> <span class="n">vgs</span>
+<span class="err">$</span> <span class="n">pvs</span>
+<span class="err">$</span> <span class="n">lvs</span>
+<span class="err">$</span> <span class="n">df</span> <span class="o">-</span><span class="n">h</span>
+<span class="err">$</span> <span class="n">lsof</span> <span class="o">+</span><span class="n">D</span> <span class="o">/</span> <span class="cm">/* beware not to kill your box */</span>
+</pre></div>
+
+
+<p>一共挂载了多少文件系统?
+有没有某个服务专用的文件系统? (比如MySQL?)
+文件系统的挂载选项是什么： noatime? default? 有没有文件系统被重新挂载为只读模式了？
+磁盘空间是否还有剩余?
+是否有大文件被删除但没有清空?
+如果磁盘空间有问题，你是否还有空间来扩展一个分区？</p>
+<p><strong>十、内核、中断和网络</strong></p>
+<div class="codehilite"><pre><span class="err">$</span> <span class="n">sysctl</span> <span class="o">-</span><span class="n">a</span> <span class="o">|</span> <span class="n">grep</span> <span class="p">...</span>
+<span class="err">$</span> <span class="n">cat</span> <span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="n">interrupts</span>
+<span class="err">$</span> <span class="n">cat</span> <span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="n">net</span><span class="o">/</span><span class="n">ip_conntrack</span> <span class="cm">/* may take some time on busy servers */</span>
+<span class="err">$</span> <span class="n">netstat</span>
+<span class="err">$</span> <span class="n">ss</span> <span class="o">-</span><span class="n">s</span>
+</pre></div>
+
+
+<p>你的中断请求是否是均衡地分配给CPU处理，还是会有某个CPU的核因为大量的网络中断请求或者RAID请求而过载了？
+SWAP交换的设置是什么？对于工作站来说<code>swappinness</code> 设为 60 就很好, 不过对于服务器就太糟了：你最好永远不要让服务器做SWAP交换，不然对磁盘的读写会锁死SWAP进程。
+<code>conntrack_max</code> 是否设的足够大，能应付你服务器的流量?
+在不同状态下(TIME_WAIT, …)TCP连接时间的设置是怎样的？
+如果要显示所有存在的连接，<code>netstat</code> 会比较慢， 你可以先用 <code>ss</code> 看一下总体情况。
+你还可以看一下 <code>Linux TCP tuning</code> 了解网络性能调优的一些要点。</p>
+<p><strong>十一、系统日志和内核消息</strong></p>
+<div class="codehilite"><pre><span class="err">$</span> <span class="n">dmesg</span>
+<span class="err">$</span> <span class="n">less</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">messages</span>
+<span class="err">$</span> <span class="n">less</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">secure</span>
+<span class="err">$</span> <span class="n">less</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">auth</span>
+</pre></div>
+
+
+<p>查看错误和警告消息，比如看看是不是很多关于连接数过多导致？
+看看是否有硬件错误或文件系统错误?
+分析是否能将这些错误事件和前面发现的疑点进行时间上的比对。</p>
+<p><strong>十二、定时任务</strong></p>
+<div class="codehilite"><pre><span class="err">$</span> <span class="n">ls</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">cron</span><span class="o">*</span> <span class="o">+</span> <span class="n">cat</span>
+<span class="err">$</span> <span class="k">for</span> <span class="n">user</span> <span class="n">in</span> <span class="err">$</span><span class="p">(</span><span class="n">cat</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">passwd</span> <span class="o">|</span> <span class="n">cut</span> <span class="o">-</span><span class="n">f1</span> <span class="o">-</span><span class="n">d</span><span class="o">:</span><span class="p">);</span> <span class="k">do</span> <span class="n">crontab</span> <span class="o">-</span><span class="n">l</span> <span class="o">-</span><span class="n">u</span> <span class="err">$</span><span class="n">user</span><span class="p">;</span> <span class="n">done</span>
+</pre></div>
+
+
+<p>是否有某个定时任务运行过于频繁?
+是否有些用户提交了隐藏的定时任务?
+在出现故障的时候，是否正好有某个备份任务在执行？</p>
+<p><strong>十三、应用系统日志</strong></p>
+<p>这里边可分析的东西就多了, 不过恐怕你作为运维人员是没功夫去仔细研究它的。关注那些明显的问题，比如在一个典型的<code>LAMP</code>（Linux+Apache+Mysql+Perl）应用环境里:</p>
+<ul>
+<li>Apache &amp; Nginx; 查找访问和错误日志, 直接找 5xx 错误, 再看看是否有 <code>limit_zone</code> 错误。</li>
+<li>MySQL; 在<code>mysql.log</code>找错误消息，看看有没有结构损坏的表， 是否有<code>innodb</code>修复进程在运行，是否有<code>disk/index/query</code> 问题.</li>
+<li>PHP-FPM; 如果设定了 <code>php-slow</code> 日志, 直接找错误信息 (php, mysql, memcache, …)，如果没设定，赶紧设定。</li>
+<li>Varnish; 在<code>varnishlog</code> 和 <code>varnishstat</code> 里, 检查 hit/miss比. 看看配置信息里是否遗漏了什么规则，使最终用户可以直接攻击你的后端？</li>
+<li>HA-Proxy; 后端的状况如何？健康状况检查是否成功？是前端还是后端的队列大小达到最大值了？</li>
+</ul>
+<p><strong>结论</strong></p>
+<p>经过这5分钟之后，你应该对如下情况比较清楚了：</p>
+<p>在服务器上运行的都是些啥？
+这个故障看起来是和 IO/硬件/网络 或者 系统配置 (有问题的代码、系统内核调优, …)相关。
+这个故障是否有你熟悉的一些特征？比如对数据库索引使用不当，或者太多的apache后台进程。</p>
+<p>你甚至有可能找到真正的故障源头。就算还没有找到，搞清楚了上面这些情况之后，你现在也具备了深挖下去的条件。继续努力吧！</p>
+		</div><!-- /.entry-content -->
+			</article>
+</section>
+        </div><!--/span-->
+      
+		<div class="span3 well sidebar-nav" id="sidebar">
+            <ul class="nav nav-list">
+<li class="nav-header"><h4><i class="icon-external-link"></i>blogroll</h4></li>
+    <li><i class="icon-external-link"></i><a href="http://www.zhihu.com/">Zhihu</a></li>
+    <li><i class="icon-external-link"></i><a href="http://dbanotes.net/">Fenng</a></li>
+    <li><i class="icon-external-link"></i><a href="http://www.worldhello.net/">Gotgit</a></li>
+    <li><i class="icon-external-link"></i><a href="https://jobsdigg.com/">JobsDigg.com</a></li>
+    <li><i class="icon-external-link"></i><a href="http://news.ycombinator.com/">Hacker News</a></li>
+    <li><i class="icon-external-link"></i><a href="http://news.dbanotes.net/news">Startup News</a></li>
+    <li><i class="icon-external-link"></i><a href="http://docs.notmyidea.org/alexis/pelican/">Pelican</a></li>
+<li class="nav-header"><h4><i class="icon-home icon-large"></i> social</h4></li>
+<li><a href="./" rel="alternate"><i class="icon-bookmark icon-large"></i>atom feed</a></li>
+    <li><a href="http://weibo.com/u/1652634905"><i class="icon-Weibo-sign icon-large"></i>Weibo</a></li>
+    <li><a href="https://github.com/dennywu0315"><i class="icon-GitHub-sign icon-large"></i>GitHub</a></li>
+
+<li class="nav-header"><h4><i class="icon-folder-close icon-large"></i>Categories</h4></li>
+<li>
+<a href="./category/articles.html">
+    <i class="icon-folder-open icon-large"></i>articles
+</a>
+</li>
+<li>
+<a href="./category/life.html">
+    <i class="icon-folder-open icon-large"></i>life
+</a>
+</li>
+<li>
+<a href="./category/tech.html">
+    <i class="icon-folder-open icon-large"></i>tech
+</a>
+</li>
+
+<li class="nav-header"><h4><i class="icon-tags icon-large"></i>Tags</h4></li>
+<li class="tag-4">
+    <a href="./tag/tech.html">
+        <i class="icon-tag icon-large"></i>tech
+    </a>
+</li>
+
+
+</ul>        </div><!--/.well -->
+
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <address id="about">
+                Proudly powered by <a href="http://pelican.notmyidea.org/">Pelican <i class="icon-external-link"></i></a>,
+				which takes great advantage of <a href="http://python.org">Python <i class="icon-external-link"></i></a>.
+        </address><!-- /#about -->
+
+        <p>The theme is from <a href="http://twitter.github.com/bootstrap/">Bootstrap from Twitter <i class="icon-external-link"></i></a>, 
+		   and <a href="http://fortawesome.github.com/Font-Awesome/">Font-Awesome <i class="icon-external-link"></i></a>, thanks!</p>
+      </footer>
+
+    </div><!--/.fluid-container-->
+
+
+                
+
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="./theme/js/jquery.js"></script>
+    <script src="./theme/js/bootstrap-transition.js"></script>
+    <script src="./theme/js/bootstrap-alert.js"></script>
+    <script src="./theme/js/bootstrap-modal.js"></script>
+    <script src="./theme/js/bootstrap-dropdown.js"></script>
+    <script src="./theme/js/bootstrap-scrollspy.js"></script>
+    <script src="./theme/js/bootstrap-tab.js"></script>
+    <script src="./theme/js/bootstrap-tooltip.js"></script>
+    <script src="./theme/js/bootstrap-popover.js"></script>
+    <script src="./theme/js/bootstrap-button.js"></script>
+    <script src="./theme/js/bootstrap-collapse.js"></script>
+    <script src="./theme/js/bootstrap-carousel.js"></script>
+    <script src="./theme/js/bootstrap-typeahead.js"></script>
+	
+	<!--<script src="./theme/js/autosidebar.js"></script>-->
+  </body>
+</html>
