@@ -139,6 +139,7 @@
 	
 <span class="label">Tags</span> 
 	<a href="../tag/tech.html"><i class="icon-tag"></i>tech</a>
+	<a href="../tag/markdown.html"><i class="icon-tag"></i>Markdown</a>
 </footer><!-- /.post-info --></div>
 		<div class="summary"><h1>This is a Markdown test.</h1>
 <h4>by <a href="http://www.marukohome.com">DennyW</a></h4>
@@ -153,48 +154,6 @@
 <blockquote>
 <p>This is a block quote with two paragraphs.This is a block quote with two paragraphs.This is a block quote with two paragraphs.This is a block quote with ...</p></blockquote> 
 			<a class="btn primary xsmall" href="../markdown-test.html">more ...</a>
-		</div>
-	</div>	
-	<hr />
-		<div class='article'>
-		<h1><a href="../pelican-git-pagede-blogjia-she.html">Pelican + Git Page的Blog架设</a></h1>
-		<div class="well small"><footer class="post-info">
-<span class="label">Date</span>
-<abbr class="published" title="2013-04-10T12:40:00">
-	<i class="icon-calendar"></i>Wed 10 April 2013
-</abbr>
-<span class="label">By</span>
-<a href="../author/dennyw.html"><i class="icon-user"></i>DennyW</a>
-<span class="label">Category</span>
-<a href="../category/tech.html"><i class="icon-folder-open"></i>tech</a>. 
-
-	
-</footer><!-- /.post-info --></div>
-		<div class="summary"><p>之前尝试了购买主机空间加上WordPress的组合，弄好了以后基本很少上了。部署完以后全图形化界面的操作总感觉少了点「Geek」的感觉。
-后来看到某篇文章，说的是利用Github提供的pages服务（免费而且无限制），正好原来的空间也差不多到期了，于是就趁着空闲时间尝试搭建了一下，的确非常方便。</p>
-<p><strong>自己的系统： <code>Mac OSX 10.8.3</code></strong></p>
-<p>搭建的过程和Linux环境下基本相同。</p>
-<p><strong>首先安装<code>PIP</code></strong></p>
-<div class="codehilite"><pre><span class="err">$</span> <span class="n">curl</span> <span class="o">-</span><span class="n">O</span> <span class="n">https</span><span class="o">:</span><span class="c1">//raw.github.com/pypa/pip/master/contrib/get-pip.py</span>
-<span class="err">$</span> <span class="n">python</span> <span class="n">get</span><span class="o">-</span><span class="n">pip</span><span class="p">.</span><span class="n">py</span>
-</pre></div>
-
-
-<p><strong>安装pelican以及markdown</strong></p>
-<div class="codehilite"><pre><span class="err">$</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">pelican</span>
-<span class="err">$</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">Markdown</span>
-</pre></div>
-
-
-<p><strong>建立blog目录</strong></p>
-<div class="codehilite"><pre><span class="err">$</span> <span class="n">mkdir</span> <span class="n">myblog</span>
-<span class="err">$</span> <span class="n">cd</span> <span class="n">myblog</span>
-</pre></div>
-
-
-<p><strong>开始创建</strong></p>
-<div class="codehilite"><pre><span class="err">$</span> <span class="n">pelican ...</span></pre></div> 
-			<a class="btn primary xsmall" href="../pelican-git-pagede-blogjia-she.html">more ...</a>
 		</div>
 	</div>	
 	<hr />
@@ -214,39 +173,6 @@
 </footer><!-- /.post-info --></div>
 		<div class="summary"><p>发现了一个很有趣的在线MD编辑工具，貌似还能推送到<code>Github</code>里，尝试一下。</p> 
 			<a class="btn primary xsmall" href="../stack-edit.html">more ...</a>
-		</div>
-	</div>	
-	<hr />
-		<div class='article'>
-		<h1><a href="../zai-fu-wu-qi-shang-pai-chu-wen-ti-de-tou-wu-fen-zhong.html">在服务器上排除问题的头五分钟</a></h1>
-		<div class="well small"><footer class="post-info">
-<span class="label">Date</span>
-<abbr class="published" title="2013-05-02T11:20:00">
-	<i class="icon-calendar"></i>Thu 02 May 2013
-</abbr>
-<span class="label">By</span>
-<a href="../author/dennyw.html"><i class="icon-user"></i>DennyW</a>
-<span class="label">Category</span>
-<a href="../category/tech.html"><i class="icon-folder-open"></i>tech</a>. 
-
-	
-</footer><!-- /.post-info --></div>
-		<div class="summary"><blockquote>
-<p>前一阵在<a href="https://news.ycombinator.com/">Hacker News</a>上看到一篇文章，写的是在服务器上排故的头五分钟工程师应该做的一些基本检测。 有的时候在问题出现的时候的确是会有些手忙脚乱，遵循一定的检测模式，的确会有助于整理思路，找出问题的根源所在。 最近在<a href="http://news.dbanotes.net/news">Startup News</a>看到有人把这篇文章翻译成了中文， 转载到这里以便日后查阅。<a href="http://devo.ps/blog/2013/03/06/troubleshooting-5minutes-on-a-yet-unknown-box.html">原文链接</a></p>
-</blockquote>
-<p>我们团队为上一家公司承担运维、优化和扩展工作的时候，我们碰到了各种不同规模的性能很差的系统和基础设备（大型系统居多，比如CNN或者世界银行的系统）。要是再赶上修复时间紧、奇葩的技术平台、缺少信息和文档，基本上这过程都会惨痛到让我们留下深刻的记忆。</p>
-<p>遇到服务器故障，问题出现的原因很少可以一下就想到。我们基本上都会从以下步骤入手：</p>
-<p><strong>一、尽可能搞清楚问题的前因后果</strong></p>
-<p>不要一下子就扎到服务器前面，你需要先搞明白对这台服务器有多少已知的情况，还有故障的具体情况。不然你很可能就是在无的放矢。</p>
-<p>必须搞清楚的问题有：</p>
-<p>故障的表现是什么？无响应？报错？
-故障是什么时候发现的？
-故障是否可重现？
-有没有出现的规律（比如每小时出现一次）
-最后一次对整个平台进行更新的内容是什么（代码、服务器等）？
-故障影响的特定用户群是什么样的(已登录的, 退出的, 某个地域的…)?
-基础架构（物理的 ...</p> 
-			<a class="btn primary xsmall" href="../zai-fu-wu-qi-shang-pai-chu-wen-ti-de-tou-wu-fen-zhong.html">more ...</a>
 		</div>
 	</div>	
 	<hr />
@@ -290,6 +216,11 @@
 </li>
 
 <li class="nav-header"><h4><i class="icon-tags icon-large"></i>Tags</h4></li>
+<li class="tag-4">
+    <a href="../tag/Markdown.html">
+        <i class="icon-tag icon-large"></i>Markdown
+    </a>
+</li>
 <li class="tag-4">
     <a href="../tag/tech.html">
         <i class="icon-tag icon-large"></i>tech
