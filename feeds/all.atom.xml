@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>iScirocco</title><link href="/" rel="alternate"></link><link href="http://www.isciro.com/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2013-05-02T11:20:00+08:00</updated><entry><title>在服务器上排除问题的头五分钟</title><link href="/zai-fu-wu-qi-shang-pai-chu-wen-ti-de-tou-wu-fen-zhong.html" rel="alternate"></link><updated>2013-05-02T11:20:00+08:00</updated><author><name>DennyW</name></author><id>tag:,2013-05-02:zai-fu-wu-qi-shang-pai-chu-wen-ti-de-tou-wu-fen-zhong.html</id><summary type="html">&lt;blockquote&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>iScirocco</title><link href="/" rel="alternate"></link><link href="http://www.isciro.com/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2013-05-10T20:35:00+08:00</updated><entry><title>Hack saved passwords in browsers</title><link href="/hack-saved-passwords-in-browsers.html" rel="alternate"></link><updated>2013-05-10T20:35:00+08:00</updated><author><name>DennyW</name></author><id>tag:,2013-05-10:hack-saved-passwords-in-browsers.html</id><summary type="html">&lt;blockquote&gt;
+&lt;p&gt;出于方便的目的，经常会使用浏览器保存一些常用的自动填表的数据。 不过可能过了几个月以后自己也不记得保存的密码是啥， 于是还要费时费力的找回或者重新注册。 今天看到一个简单的方法可以省去一些麻烦。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;以Chrome为例。
+光标定位在密码栏中，右键选择&lt;code&gt;Inspect element&lt;/code&gt;打开控制台。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="sample" src="http://ntu.me/di/8SIA/Capture.jpg" /&gt;&lt;/p&gt;
+&lt;p&gt;找到&lt;code&gt;type&lt;/code&gt;项，双击值&lt;code&gt;password&lt;/code&gt;，然后修改。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="sample2" src="http://ntu.me/di/ZOTB/Capture2.jpg" /&gt;&lt;/p&gt;
+&lt;p&gt;修改为&lt;code&gt;text&lt;/code&gt;，回车， 明文密码就出现了。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="sample3" src="http://ntu.me/di/O2YG/Capture3.jpg" /&gt;&lt;/p&gt;
+&lt;p&gt;当然， 如果是Chrome的话，其实设置项目中就能看到保存好的所有密码，并且可以显示为明文，总觉得不太安全。&lt;/p&gt;</summary><category term="html"></category><category term="chrome"></category></entry><entry><title>在服务器上排除问题的头五分钟</title><link href="/zai-fu-wu-qi-shang-pai-chu-wen-ti-de-tou-wu-fen-zhong.html" rel="alternate"></link><updated>2013-05-02T11:20:00+08:00</updated><author><name>DennyW</name></author><id>tag:,2013-05-02:zai-fu-wu-qi-shang-pai-chu-wen-ti-de-tou-wu-fen-zhong.html</id><summary type="html">&lt;blockquote&gt;
 &lt;p&gt;前一阵在&lt;a href="https://news.ycombinator.com/"&gt;Hacker News&lt;/a&gt;上看到一篇文章，写的是在服务器上排故的头五分钟工程师应该做的一些基本检测。 有的时候在问题出现的时候的确是会有些手忙脚乱，遵循一定的检测模式，的确会有助于整理思路，找出问题的根源所在。 最近在&lt;a href="http://news.dbanotes.net/news"&gt;Startup News&lt;/a&gt;看到有人把这篇文章翻译成了中文， 转载到这里以便日后查阅。&lt;a href="http://devo.ps/blog/2013/03/06/troubleshooting-5minutes-on-a-yet-unknown-box.html"&gt;原文链接&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;我们团队为上一家公司承担运维、优化和扩展工作的时候，我们碰到了各种不同规模的性能很差的系统和基础设备（大型系统居多，比如CNN或者世界银行的系统）。要是再赶上修复时间紧、奇葩的技术平台、缺少信息和文档，基本上这过程都会惨痛到让我们留下深刻的记忆。&lt;/p&gt;
