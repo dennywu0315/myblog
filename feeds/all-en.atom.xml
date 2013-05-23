@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<<<<<<< HEAD
 <feed xmlns="http://www.w3.org/2005/Atom"><title>iScirocco</title><link href="/" rel="alternate"></link><link href="http://www.isciro.com/feeds/all-en.atom.xml" rel="self"></link><id>/</id><updated>2013-05-22T18:30:00+08:00</updated><entry><title>XBOX ONE!</title><link href="/xbox-one.html" rel="alternate"></link><updated>2013-05-22T18:30:00+08:00</updated><author><name>DennyW</name></author><id>tag:,2013-05-22:xbox-one.html</id><summary type="html">&lt;p&gt;新的xbox终于发布了， 看了各种资讯和评论， 褒贬不一。
 个人感觉微软还是继续了他们在xbox上的战略，就是要'占领客厅'， 而不是单纯的游戏设备。 从新机器那略坑爹的外形就能看出来， 忒像我家机顶盒了。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="enter image description here" src="http://news.mydrivers.com/img/20130522/f5fe6a68e1f449918ad23157d94e814a.png" /&gt;&lt;/p&gt;
@@ -12,9 +11,6 @@
 &lt;p&gt;总而言之，当年Xbox360和PS3发布时的惊艳还历历在目， 转眼新一代主机又将腾空出世。 不知道次次时代的主机们能不能在如今手机平板大行其道的大环境中吸引到更多的玩家呢。 期待E3有更多的劲爆消息。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="enter image description here" src="http://p2.zhimg.com/ec/9c/ec9c47f144a80fc3ab9a21f7f7970aa6_m.jpg" /&gt;&lt;/p&gt;
 &lt;p&gt;附上&lt;a href="http://www.zhihu.com/question/21091537"&gt;知乎&lt;/a&gt;上关于xbox one新主机的一些点评与吐槽， 挺有趣的。&lt;/p&gt;</summary><category term="xbox"></category></entry><entry><title>Hack saved passwords in browsers</title><link href="/hack-saved-passwords-in-browsers.html" rel="alternate"></link><updated>2013-05-10T20:35:00+08:00</updated><author><name>DennyW</name></author><id>tag:,2013-05-10:hack-saved-passwords-in-browsers.html</id><summary type="html">&lt;blockquote&gt;
-=======
-<feed xmlns="http://www.w3.org/2005/Atom"><title>iScirocco</title><link href="/" rel="alternate"></link><link href="http://www.isciro.com/feeds/all-en.atom.xml" rel="self"></link><id>/</id><updated>2013-05-10T20:35:00+08:00</updated><entry><title>Hack saved passwords in browsers</title><link href="/hack-saved-passwords-in-browsers.html" rel="alternate"></link><updated>2013-05-10T20:35:00+08:00</updated><author><name>DennyW</name></author><id>tag:,2013-05-10:hack-saved-passwords-in-browsers.html</id><summary type="html">&lt;blockquote&gt;
->>>>>>> b09240f5d50fd0c5d947789fb6a540883c55cc14
 &lt;p&gt;出于方便的目的，经常会使用浏览器保存一些常用的自动填表的数据。 不过可能过了几个月以后自己也不记得保存的密码是啥， 于是还要费时费力的找回或者重新注册。 今天看到一个简单的方法可以省去一些麻烦。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;以Chrome为例。
