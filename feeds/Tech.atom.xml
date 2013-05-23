@@ -1,5 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>iScirocco</title><link href="/" rel="alternate"></link><link href="http://www.isciro.com/feeds/tech.atom.xml" rel="self"></link><id>/</id><updated>2013-04-10T12:40:00+08:00</updated><entry><title>Pelican + Git Page的Blog架设</title><link href="/pelican-git-pagede-blogjia-she.html" rel="alternate"></link><updated>2013-04-10T12:40:00+08:00</updated><author><name>DennyW</name></author><id>tag:,2013-04-10:pelican-git-pagede-blogjia-she.html</id><summary type="html">&lt;p&gt;之前尝试了购买主机空间加上WordPress的组合，弄好了以后基本很少上了。部署完以后全图形化界面的操作总感觉少了点「Geek」的感觉。
+<feed xmlns="http://www.w3.org/2005/Atom"><title>iScirocco</title><link href="/" rel="alternate"></link><link href="http://www.isciro.com/feeds/tech.atom.xml" rel="self"></link><id>/</id><updated>2013-05-10T20:35:00+08:00</updated><entry><title>Hack saved passwords in browsers</title><link href="/hack-saved-passwords-in-browsers.html" rel="alternate"></link><updated>2013-05-10T20:35:00+08:00</updated><author><name>DennyW</name></author><id>tag:,2013-05-10:hack-saved-passwords-in-browsers.html</id><summary type="html">&lt;blockquote&gt;
+&lt;p&gt;出于方便的目的，经常会使用浏览器保存一些常用的自动填表的数据。 不过可能过了几个月以后自己也不记得保存的密码是啥， 于是还要费时费力的找回或者重新注册。 今天看到一个简单的方法可以省去一些麻烦。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;以Chrome为例。
+光标定位在密码栏中，右键选择&lt;code&gt;Inspect element&lt;/code&gt;打开控制台。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="sample" src="http://ntu.me/di/8SIA/Capture.jpg" /&gt;&lt;/p&gt;
+&lt;p&gt;找到&lt;code&gt;type&lt;/code&gt;项，双击值&lt;code&gt;password&lt;/code&gt;，然后修改。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="sample2" src="http://ntu.me/di/ZOTB/Capture2.jpg" /&gt;&lt;/p&gt;
+&lt;p&gt;修改为&lt;code&gt;text&lt;/code&gt;，回车， 明文密码就出现了。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="sample3" src="http://ntu.me/di/O2YG/Capture3.jpg" /&gt;&lt;/p&gt;
+&lt;p&gt;当然， 如果是Chrome的话，其实设置项目中就能看到保存好的所有密码，并且可以显示为明文，总觉得不太安全。&lt;/p&gt;</summary><category term="html"></category><category term="chrome"></category></entry><entry><title>在服务器上排除问题的头五分钟</title><link href="/zai-fu-wu-qi-shang-pai-chu-wen-ti-de-tou-wu-fen-zhong.html" rel="alternate"></link><updated>2013-05-02T11:20:00+08:00</updated><author><name>DennyW</name></author><id>tag:,2013-05-02:zai-fu-wu-qi-shang-pai-chu-wen-ti-de-tou-wu-fen-zhong.html</id><summary type="html">&lt;blockquote&gt;
+&lt;p&gt;前一阵在&lt;a href="https://news.ycombinator.com/"&gt;Hacker News&lt;/a&gt;上看到一篇文章，写的是在服务器上排故的头五分钟工程师应该做的一些基本检测。 有的时候在问题出现的时候的确是会有些手忙脚乱，遵循一定的检测模式，的确会有助于整理思路，找出问题的根源所在。 最近在&lt;a href="http://news.dbanotes.net/news"&gt;Startup News&lt;/a&gt;看到有人把这篇文章翻译成了中文， 转载到这里以便日后查阅。&lt;a href="http://devo.ps/blog/2013/03/06/troubleshooting-5minutes-on-a-yet-unknown-box.html"&gt;原文链接&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;我们团队为上一家公司承担运维、优化和扩展工作的时候，我们碰到了各种不同规模的性能很差的系统和基础设备（大型系统居多，比如CNN或者世界银行的系统）。要是再赶上修复时间紧、奇葩的技术平台、缺少信息和文档，基本上这过程都会惨痛到让我们留下深刻的记忆。&lt;/p&gt;
+&lt;p&gt;遇到服务器故障，问题出现的原因很少可以一下就想到。我们基本上都会从以下步骤入手：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;一、尽可能搞清楚问题的前因后果&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;不要一下子就扎到服务器前面，你需要先搞明白对这台服务器有多少已知的情况，还有故障的具体情况。不然你很可能就是在无的放矢。&lt;/p&gt;
+&lt;p&gt;必须搞清楚的问题有：&lt;/p&gt;
+&lt;p&gt;故障的表现是什么？无响应？报错？
+故障是什么时候发现的？
+故障是否可重现？
+有没有出现的规律（比如每小时出现一次）
+最后一次对整个平台进行更新的内容是什么（代码、服务器等）？
+故障影响的特定用户群是什么样的(已登录的, 退出的, 某个地域的…)?
+基础架构（物理的、逻辑的）的文档是否能找到?
+是否有监控平台可用? （比如Munin、Zabbix、 Nagios、 New Relic… 什么都可以）
+是否有日志可以查看?. （比如Loggly、Airbrake、 Graylog…）
+最后两个是最方便的信息来源，不过别抱太大希望，基本上它们都不会有。只能再继续摸索了。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;二、有谁在?&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;w&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;last&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;用这两个命令看看都有谁在线，有哪些用户访问过。这不是什么关键步骤，不过最好别在其他用户正干活的时候来调试系统。有道是一山不容二虎嘛。（One cook in the kitchen is enough.）&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;三、之前发生了什么?&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;history&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;查看一下之前服务器上执行过的命令。看一下总是没错的，加上前面看的谁登录过的信息，应该有点用。另外作为admin要注意，不要利用自己的权限去侵犯别人的隐私哦。&lt;/p&gt;
+&lt;p&gt;到这里先提醒一下，等会你可能会需要更新 &lt;code&gt;HISTTIMEFORMAT&lt;/code&gt; 环境变量来显示这些命令被执行的时间。对要不然光看到一堆不知道啥时候执行的命令，同样会令人抓狂的。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;四、现在在运行的进程是啥?&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;pstree&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;ps&lt;/span&gt; &lt;span class="n"&gt;aux&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;这都是查看现有进程的。 &lt;code&gt;ps aux&lt;/code&gt; 的结果比较杂乱， &lt;code&gt;pstree -a&lt;/code&gt; 的结果比较简单明了，可以看到正在运行的进程及相关用户。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;五、监听的网络服务&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;netstat&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;ntlp&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;netstat&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;nulp&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;netstat&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;nxlp&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;我一般都分开运行这三个命令，不想一下子看到列出一大堆所有的服务。&lt;code&gt;netstat -nalp&lt;/code&gt;倒也可以。不过我绝不会用 &lt;code&gt;numeric&lt;/code&gt; 选项 （鄙人一点浅薄的看法：IP 地址看起来更方便）。&lt;/p&gt;
+&lt;p&gt;找到所有正在运行的服务，检查它们是否应该运行。查看各个监听端口。在&lt;code&gt;netstat&lt;/code&gt;显示的服务列表中的PID 和 &lt;code&gt;ps aux&lt;/code&gt; 进程列表中的是一样的。&lt;/p&gt;
+&lt;p&gt;如果服务器上有好几个Java或者Erlang什么的进程在同时运行，能够按PID分别找到每个进程就很重要了。&lt;/p&gt;
+&lt;p&gt;通常我们建议每台服务器上运行的服务少一点，必要时可以增加服务器。如果你看到一台服务器上有三四十个监听端口开着，那还是做个记录，回头有空的时候清理一下，重新组织一下服务器。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;六、CPU 和内存&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;free&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;uptime&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;top&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;htop&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;注意以下问题:&lt;/p&gt;
+&lt;p&gt;还有空余的内存吗? 服务器是否正在内存和硬盘之间进行swap?
+还有剩余的CPU吗? 服务器是几核的? 是否有某些CPU核负载过多了?
+服务器最大的负载来自什么地方? 平均负载是多少?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;七、硬件&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;lspci&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;dmidecode&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;ethtool&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;有很多服务器还是裸机状态，可以看一下：&lt;/p&gt;
+&lt;p&gt;找到RAID 卡 (是否带BBU备用电池?)、 CPU、空余的内存插槽。根据这些情况可以大致了解硬件问题的来源和性能改进的办法。
+网卡是否设置好? 是否正运行在半双工状态? 速度是10MBps? 有没有 TX/RX 报错?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;八、IO 性能&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;iostat&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;kx&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;vmstat&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;mpstat&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;dstat&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;top&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;io&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;top&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;bio&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;这些命令对于调试后端性能非常有用。&lt;/p&gt;
+&lt;p&gt;检查磁盘使用量：服务器硬盘是否已满?
+是否开启了swap交换模式 (si/so)?
+CPU被谁占用：系统进程? 用户进程? 虚拟机?
+&lt;code&gt;dstat&lt;/code&gt; 是我的最爱。用它可以看到谁在进行 IO： 是不是MySQL吃掉了所有的系统资源? 还是你的PHP进程?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;九、挂载点 和 文件系统&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;mount&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;cat&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;fstab&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;vgs&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;pvs&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;lvs&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;df&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;h&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;lsof&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="n"&gt;D&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="cm"&gt;/* beware not to kill your box */&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;一共挂载了多少文件系统?
+有没有某个服务专用的文件系统? (比如MySQL?)
+文件系统的挂载选项是什么： noatime? default? 有没有文件系统被重新挂载为只读模式了？
+磁盘空间是否还有剩余?
+是否有大文件被删除但没有清空?
+如果磁盘空间有问题，你是否还有空间来扩展一个分区？&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;十、内核、中断和网络&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;sysctl&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;grep&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;cat&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;proc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;interrupts&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;cat&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;proc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;net&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;ip_conntrack&lt;/span&gt; &lt;span class="cm"&gt;/* may take some time on busy servers */&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;netstat&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;ss&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;你的中断请求是否是均衡地分配给CPU处理，还是会有某个CPU的核因为大量的网络中断请求或者RAID请求而过载了？
+SWAP交换的设置是什么？对于工作站来说&lt;code&gt;swappinness&lt;/code&gt; 设为 60 就很好, 不过对于服务器就太糟了：你最好永远不要让服务器做SWAP交换，不然对磁盘的读写会锁死SWAP进程。
+&lt;code&gt;conntrack_max&lt;/code&gt; 是否设的足够大，能应付你服务器的流量?
+在不同状态下(TIME_WAIT, …)TCP连接时间的设置是怎样的？
+如果要显示所有存在的连接，&lt;code&gt;netstat&lt;/code&gt; 会比较慢， 你可以先用 &lt;code&gt;ss&lt;/code&gt; 看一下总体情况。
+你还可以看一下 &lt;code&gt;Linux TCP tuning&lt;/code&gt; 了解网络性能调优的一些要点。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;十一、系统日志和内核消息&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;dmesg&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;less&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;messages&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;less&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;secure&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;less&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;auth&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;查看错误和警告消息，比如看看是不是很多关于连接数过多导致？
+看看是否有硬件错误或文件系统错误?
+分析是否能将这些错误事件和前面发现的疑点进行时间上的比对。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;十二、定时任务&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;ls&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;cron&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;cat&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;user&lt;/span&gt; &lt;span class="n"&gt;in&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cat&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;passwd&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;cut&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;f1&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="n"&gt;crontab&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;l&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;u&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;done&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;是否有某个定时任务运行过于频繁?
+是否有些用户提交了隐藏的定时任务?
+在出现故障的时候，是否正好有某个备份任务在执行？&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;十三、应用系统日志&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;这里边可分析的东西就多了, 不过恐怕你作为运维人员是没功夫去仔细研究它的。关注那些明显的问题，比如在一个典型的&lt;code&gt;LAMP&lt;/code&gt;（Linux+Apache+Mysql+Perl）应用环境里:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Apache &amp;amp; Nginx; 查找访问和错误日志, 直接找 5xx 错误, 再看看是否有 &lt;code&gt;limit_zone&lt;/code&gt; 错误。&lt;/li&gt;
+&lt;li&gt;MySQL; 在&lt;code&gt;mysql.log&lt;/code&gt;找错误消息，看看有没有结构损坏的表， 是否有&lt;code&gt;innodb&lt;/code&gt;修复进程在运行，是否有&lt;code&gt;disk/index/query&lt;/code&gt; 问题.&lt;/li&gt;
+&lt;li&gt;PHP-FPM; 如果设定了 &lt;code&gt;php-slow&lt;/code&gt; 日志, 直接找错误信息 (php, mysql, memcache, …)，如果没设定，赶紧设定。&lt;/li&gt;
+&lt;li&gt;Varnish; 在&lt;code&gt;varnishlog&lt;/code&gt; 和 &lt;code&gt;varnishstat&lt;/code&gt; 里, 检查 hit/miss比. 看看配置信息里是否遗漏了什么规则，使最终用户可以直接攻击你的后端？&lt;/li&gt;
+&lt;li&gt;HA-Proxy; 后端的状况如何？健康状况检查是否成功？是前端还是后端的队列大小达到最大值了？&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;结论&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;经过这5分钟之后，你应该对如下情况比较清楚了：&lt;/p&gt;
+&lt;p&gt;在服务器上运行的都是些啥？
+这个故障看起来是和 IO/硬件/网络 或者 系统配置 (有问题的代码、系统内核调优, …)相关。
+这个故障是否有你熟悉的一些特征？比如对数据库索引使用不当，或者太多的apache后台进程。&lt;/p&gt;
+&lt;p&gt;你甚至有可能找到真正的故障源头。就算还没有找到，搞清楚了上面这些情况之后，你现在也具备了深挖下去的条件。继续努力吧！&lt;/p&gt;</summary><category term="Linux"></category></entry><entry><title>Pelican + Git Page的Blog架设</title><link href="/pelican-git-pagede-blogjia-she.html" rel="alternate"></link><updated>2013-04-10T12:40:00+08:00</updated><author><name>DennyW</name></author><id>tag:,2013-04-10:pelican-git-pagede-blogjia-she.html</id><summary type="html">&lt;p&gt;之前尝试了购买主机空间加上WordPress的组合，弄好了以后基本很少上了。部署完以后全图形化界面的操作总感觉少了点「Geek」的感觉。
 后来看到某篇文章，说的是利用Github提供的pages服务（免费而且无限制），正好原来的空间也差不多到期了，于是就趁着空闲时间尝试搭建了一下，的确非常方便。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;自己的系统： &lt;code&gt;Mac OSX 10.8.3&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;搭建的过程和Linux环境下基本相同。&lt;/p&gt;
@@ -62,4 +223,156 @@
 
 &lt;p&gt;访问访问&lt;code&gt;http://username.github.com/myblog/&lt;/code&gt;就可以看到Blog。&lt;/p&gt;
 &lt;p&gt;pelican还支持很多的主题以及插件的应用， 参考文档便可以简单配置。
-相比于WP，pelican发布blog稍显繁琐，同时有多个工作环境的情况下也需要一直同步内容。不过整体思路还是非常值得肯定的。适合所有喜爱尝试，不怕麻烦的人们。&lt;/p&gt;</summary></entry><entry><title>Stack Edit</title><link href="/stack-edit.html" rel="alternate"></link><updated>2013-04-02T16:43:00+08:00</updated><author><name>DennyW</name></author><id>tag:,2013-04-02:stack-edit.html</id><summary type="html">&lt;p&gt;发现了一个很有趣的在线MD编辑工具，貌似还能推送到&lt;code&gt;Github&lt;/code&gt;里，尝试一下。&lt;/p&gt;</summary></entry></feed>
+相比于WP，pelican发布blog稍显繁琐，同时有多个工作环境的情况下也需要一直同步内容。不过整体思路还是非常值得肯定的。适合所有喜爱尝试，不怕麻烦的人们。&lt;/p&gt;</summary><category term="Git"></category><category term="Python"></category></entry><entry><title>Stack Edit</title><link href="/stack-edit.html" rel="alternate"></link><updated>2013-04-02T16:43:00+08:00</updated><author><name>DennyW</name></author><id>tag:,2013-04-02:stack-edit.html</id><summary type="html">&lt;p&gt;发现了一个很有趣的在线MD编辑工具，貌似还能推送到&lt;code&gt;Github&lt;/code&gt;里，尝试一下。&lt;/p&gt;</summary></entry><entry><title>Markdown test</title><link href="/markdown-test.html" rel="alternate"></link><updated>2013-03-06T16:21:00+08:00</updated><author><name>DennyW</name></author><id>tag:,2013-03-06:markdown-test.html</id><summary type="html">&lt;h1&gt;This is a Markdown test.&lt;/h1&gt;
+&lt;h4&gt;by &lt;a href="http://www.marukohome.com"&gt;DennyW&lt;/a&gt;&lt;/h4&gt;
+&lt;hr /&gt;
+&lt;h1&gt;This is H1&lt;/h1&gt;
+&lt;hr /&gt;
+&lt;h2&gt;This is H2&lt;/h2&gt;
+&lt;hr /&gt;
+&lt;h3&gt;This is H3&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;h3&gt;Test the block quote:&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;This is a block quote with two paragraphs.This is a block quote with two paragraphs.This is a block quote with two paragraphs.This is a block quote with two paragraphs.This is a block quote with two paragraphs.This is a block quote with two paragraphs.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;This is nested blockquote.This is nested blockquote.This is nested blockquote.This is nested blockquote.This is nested blockquote.This is nested blockquote.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;hr /&gt;
+&lt;h3&gt;Test the list:&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Red&lt;/li&gt;
+&lt;li&gt;Green&lt;/li&gt;
+&lt;li&gt;Blue&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li&gt;First&lt;/li&gt;
+&lt;li&gt;Second&lt;/li&gt;
+&lt;li&gt;Third&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr /&gt;
+&lt;h3&gt;Test code block:&lt;/h3&gt;
+&lt;p&gt;This is an example of Perl script:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="k"&gt;foreach&lt;/span&gt; &lt;span class="nv"&gt;@array&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;my&lt;/span&gt; &lt;span class="nv"&gt;$def&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nv"&gt;$_&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;$def&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+        &lt;span class="nv"&gt;$def&lt;/span&gt; &lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="nv"&gt;$def&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="nv"&gt;$def&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;hr /&gt;
+&lt;h3&gt;Test links:&lt;/h3&gt;
+&lt;p&gt;This is &lt;a href="http://www.marukohome.com"&gt;an example&lt;/a&gt; inline link.&lt;/p&gt;
+&lt;p&gt;This is &lt;a href="http://www.marukohome.com" title="title here"&gt;an example&lt;/a&gt; reference-style link.&lt;/p&gt;
+&lt;p&gt;I get 10 times more traffic from &lt;a href="http://google.com/" title="Google"&gt;Google&lt;/a&gt; than from
+&lt;a href="http://search.yahoo.com/" title="Yahoo Search"&gt;Yahoo&lt;/a&gt; or &lt;a href="http://search.msn.com/" title="MSN Search"&gt;MSN&lt;/a&gt;.&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h3&gt;Test the emphasize:&lt;/h3&gt;
+&lt;p&gt;&lt;em&gt;Test string&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Test string&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Test string&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Test string&lt;/strong&gt;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h3&gt;&lt;/h3&gt;
+&lt;h3&gt;Test the inline code block:&lt;/h3&gt;
+&lt;p&gt;Use the &lt;code&gt;printf()&lt;/code&gt; function&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h3&gt;Test the automatic link transfer:&lt;/h3&gt;
+&lt;p&gt;Website: &lt;a href="http://marukohome.com"&gt;http://marukohome.com&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Mail:&lt;a href="&amp;#109;&amp;#97;&amp;#105;&amp;#108;&amp;#116;&amp;#111;&amp;#58;&amp;#97;&amp;#98;&amp;#99;&amp;#100;&amp;#101;&amp;#102;&amp;#103;&amp;#64;&amp;#103;&amp;#109;&amp;#97;&amp;#105;&amp;#108;&amp;#46;&amp;#99;&amp;#111;&amp;#109;"&gt;&amp;#97;&amp;#98;&amp;#99;&amp;#100;&amp;#101;&amp;#102;&amp;#103;&amp;#64;&amp;#103;&amp;#109;&amp;#97;&amp;#105;&amp;#108;&amp;#46;&amp;#99;&amp;#111;&amp;#109;&lt;/a&gt;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h3&gt;Test Picture:&lt;/h3&gt;
+&lt;p&gt;&lt;img alt="Alt Test" src="http://th00.deviantart.net/fs70/150/i/2011/178/a/f/octocat_by_rstovall-d3k6a7n.jpg" /&gt;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h1&gt;Done!&lt;/h1&gt;
+&lt;h3&gt;Below is the code:&lt;/h3&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="c1"&gt;#This is a Markdown test. &lt;/span&gt;
+&lt;span class="c1"&gt;####by [DennyW](http://www.marukohome.com)&lt;/span&gt;
+
+&lt;span class="o"&gt;***&lt;/span&gt;
+&lt;span class="c1"&gt;#This is H1&lt;/span&gt;
+&lt;span class="o"&gt;***&lt;/span&gt;
+&lt;span class="c1"&gt;##This is H2&lt;/span&gt;
+&lt;span class="o"&gt;***&lt;/span&gt;
+&lt;span class="c1"&gt;###This is H3&lt;/span&gt;
+&lt;span class="o"&gt;***&lt;/span&gt;
+&lt;span class="c1"&gt;###Test the block quote:&lt;/span&gt;
+
+&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;This&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="n"&gt;block&lt;/span&gt; &lt;span class="n"&gt;quote&lt;/span&gt; &lt;span class="n"&gt;with&lt;/span&gt; &lt;span class="n"&gt;two&lt;/span&gt; &lt;span class="n"&gt;paragraphs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;This&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="n"&gt;block&lt;/span&gt; &lt;span class="n"&gt;quote&lt;/span&gt; &lt;span class="n"&gt;with&lt;/span&gt; &lt;span class="n"&gt;two&lt;/span&gt; &lt;span class="n"&gt;paragraphs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;This&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="n"&gt;block&lt;/span&gt; &lt;span class="n"&gt;quote&lt;/span&gt; &lt;span class="n"&gt;with&lt;/span&gt; &lt;span class="n"&gt;two&lt;/span&gt; &lt;span class="n"&gt;paragraphs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;This&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="n"&gt;block&lt;/span&gt; &lt;span class="n"&gt;quote&lt;/span&gt; &lt;span class="n"&gt;with&lt;/span&gt; &lt;span class="n"&gt;two&lt;/span&gt; &lt;span class="n"&gt;paragraphs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;This&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="n"&gt;block&lt;/span&gt; &lt;span class="n"&gt;quote&lt;/span&gt; &lt;span class="n"&gt;with&lt;/span&gt; &lt;span class="n"&gt;two&lt;/span&gt; &lt;span class="n"&gt;paragraphs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;This&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="n"&gt;block&lt;/span&gt; &lt;span class="n"&gt;quote&lt;/span&gt; &lt;span class="n"&gt;with&lt;/span&gt; &lt;span class="n"&gt;two&lt;/span&gt; &lt;span class="n"&gt;paragraphs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;This&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;nested&lt;/span&gt; &lt;span class="n"&gt;blockquote&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;This&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;nested&lt;/span&gt; &lt;span class="n"&gt;blockquote&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;This&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;nested&lt;/span&gt; &lt;span class="n"&gt;blockquote&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;This&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;nested&lt;/span&gt; &lt;span class="n"&gt;blockquote&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;This&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;nested&lt;/span&gt; &lt;span class="n"&gt;blockquote&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;This&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;nested&lt;/span&gt; &lt;span class="n"&gt;blockquote&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;
+
+&lt;span class="o"&gt;***&lt;/span&gt;
+
+&lt;span class="c1"&gt;###Test the list:&lt;/span&gt;
+&lt;span class="o"&gt;*&lt;/span&gt;   &lt;span class="n"&gt;Red&lt;/span&gt;
+&lt;span class="o"&gt;*&lt;/span&gt;   &lt;span class="n"&gt;Green&lt;/span&gt;
+&lt;span class="o"&gt;*&lt;/span&gt;   &lt;span class="n"&gt;Blue&lt;/span&gt;
+&lt;span class="o"&gt;***&lt;/span&gt;
+&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;First&lt;/span&gt;
+&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;  &lt;span class="n"&gt;Second&lt;/span&gt;
+&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;Third&lt;/span&gt;
+&lt;span class="o"&gt;***&lt;/span&gt;
+&lt;span class="c1"&gt;###Test code block:&lt;/span&gt;
+&lt;span class="n"&gt;This&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;an&lt;/span&gt; &lt;span class="n"&gt;example&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="n"&gt;Perl&lt;/span&gt; &lt;span class="n"&gt;script:&lt;/span&gt;
+
+    &lt;span class="k"&gt;foreach&lt;/span&gt; &lt;span class="nv"&gt;@array&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="k"&gt;my&lt;/span&gt; &lt;span class="nv"&gt;$def&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nv"&gt;$_&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;$def&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+            &lt;span class="nv"&gt;$def&lt;/span&gt; &lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="nv"&gt;$def&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="nv"&gt;$def&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="o"&gt;***&lt;/span&gt;
+&lt;span class="c1"&gt;###Test links:&lt;/span&gt;
+&lt;span class="n"&gt;This&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;an&lt;/span&gt; &lt;span class="n"&gt;example&lt;/span&gt;&lt;span class="p"&gt;](&lt;/span&gt;&lt;span class="n"&gt;http:&lt;/span&gt;&lt;span class="sr"&gt;//&lt;/span&gt;&lt;span class="n"&gt;www&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;marukohome&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;inline&lt;/span&gt; &lt;span class="nb"&gt;link&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;
+
+&lt;span class="n"&gt;This&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;an&lt;/span&gt; &lt;span class="n"&gt;example&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="n"&gt;reference&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;style&lt;/span&gt; &lt;span class="nb"&gt;link&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;
+&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;http:&lt;/span&gt;&lt;span class="sr"&gt;//&lt;/span&gt;&lt;span class="n"&gt;www&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;marukohome&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;title here&amp;quot;&lt;/span&gt;
+
+&lt;span class="n"&gt;I&lt;/span&gt; &lt;span class="n"&gt;get&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt; &lt;span class="nb"&gt;times&lt;/span&gt; &lt;span class="n"&gt;more&lt;/span&gt; &lt;span class="n"&gt;traffic&lt;/span&gt; &lt;span class="n"&gt;from&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Google&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="n"&gt;than&lt;/span&gt; &lt;span class="n"&gt;from&lt;/span&gt;
+&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Yahoo&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="ow"&gt;or&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;MSN&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;
+
+&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;http:&lt;/span&gt;&lt;span class="sr"&gt;//goog&lt;/span&gt;&lt;span class="ow"&gt;le&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Google&amp;quot;&lt;/span&gt;
+&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;http:&lt;/span&gt;&lt;span class="sr"&gt;//s&lt;/span&gt;&lt;span class="n"&gt;earch&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;yahoo&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;  &lt;span class="s"&gt;&amp;quot;Yahoo Search&amp;quot;&lt;/span&gt;
+&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;http:&lt;/span&gt;&lt;span class="sr"&gt;//s&lt;/span&gt;&lt;span class="n"&gt;earch&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;msn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;MSN Search&amp;quot;&lt;/span&gt;
+&lt;span class="o"&gt;***&lt;/span&gt;
+
+&lt;span class="c1"&gt;###Test the emphasize:&lt;/span&gt;
+
+&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;Test&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;
+
+&lt;span class="n"&gt;_Test&lt;/span&gt; &lt;span class="n"&gt;string_&lt;/span&gt;
+
+&lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;Test&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;**&lt;/span&gt;
+
+&lt;span class="n"&gt;__Test&lt;/span&gt; &lt;span class="n"&gt;string__&lt;/span&gt;
+&lt;span class="o"&gt;***&lt;/span&gt;
+
+&lt;span class="c1"&gt;###&lt;/span&gt;
+&lt;span class="c1"&gt;###Test the inline code block:&lt;/span&gt;
+&lt;span class="n"&gt;Use&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="sb"&gt;`printf()`&lt;/span&gt; &lt;span class="n"&gt;function&lt;/span&gt;
+&lt;span class="o"&gt;***&lt;/span&gt;
+
+&lt;span class="c1"&gt;###Test the automatic link transfer:&lt;/span&gt;
+
+&lt;span class="n"&gt;Website:&lt;/span&gt; &lt;span class="sr"&gt;&amp;lt;http://marukohome.com&amp;gt;&lt;/span&gt;
+
+&lt;span class="n"&gt;Mail:&lt;/span&gt;&lt;span class="sr"&gt;&amp;lt;abcdef@gmail.com&amp;gt;&lt;/span&gt;
+&lt;span class="o"&gt;***&lt;/span&gt;
+
+&lt;span class="c1"&gt;###Test Picture:&lt;/span&gt;
+&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Alt&lt;/span&gt; &lt;span class="n"&gt;Test&lt;/span&gt;&lt;span class="p"&gt;](&lt;/span&gt;&lt;span class="n"&gt;http:&lt;/span&gt;&lt;span class="sr"&gt;//&lt;/span&gt;&lt;span class="n"&gt;th00&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;deviantart&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;net&lt;/span&gt;&lt;span class="sr"&gt;/fs70/&lt;/span&gt;&lt;span class="mi"&gt;150&lt;/span&gt;&lt;span class="sr"&gt;/i/&lt;/span&gt;&lt;span class="mi"&gt;2011&lt;/span&gt;&lt;span class="sr"&gt;/178/&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="sr"&gt;/f/oc&lt;/span&gt;&lt;span class="n"&gt;tocat_by_rstovall&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;d3k6a7n&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;jpg&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="o"&gt;***&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="Markdown"></category></entry></feed>
