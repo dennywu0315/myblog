@@ -176,8 +176,8 @@ SWAP交换的设置是什么？对于工作站来说&lt;code&gt;swappinness&lt;/
 &lt;p&gt;&lt;strong&gt;自己的系统： &lt;code&gt;Mac OSX 10.8.3&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;搭建的过程和Linux环境下基本相同。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;首先安装&lt;code&gt;PIP&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;curl&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;O&lt;/span&gt; &lt;span class="n"&gt;https&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="c1"&gt;//raw.github.com/pypa/pip/master/contrib/get-pip.py&lt;/span&gt;
-&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt; &lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;pip&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;py&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;curl -O https://raw.github.com/pypa/pip/master/contrib/get-pip.py
+&lt;span class="nv"&gt;$ &lt;/span&gt;python get-pip.py
 &lt;/pre&gt;&lt;/div&gt;
 
 
