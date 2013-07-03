@@ -97,6 +97,53 @@
         <div class="span9" id="content">
                     
 		<div class='article'>
+		<h1><a href="./rsyncbi-ji.html">rsync笔记</a></h1>
+		<div class="well small"><footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2013-06-20T12:30:00">
+	<i class="icon-calendar"></i>四 20 六月 2013
+</abbr>
+<span class="label">By</span>
+<a href="./author/dennyw.html"><i class="icon-user"></i>DennyW</a>
+<span class="label">Category</span>
+<a href="./category/tech.html"><i class="icon-folder-open"></i>tech</a>. 
+
+	
+<span class="label">Tags</span> 
+	<a href="./tag/rsync.html"><i class="icon-tag"></i>rsync</a>
+</footer><!-- /.post-info --></div>
+		<div class="summary"><p>看书看到rsync相关的内容，于是自己做了些小实验，巩固一下知识点。</p>
+<ul>
+<li>简介</li>
+</ul>
+<p>rsync是类unix系统下的数据镜像备份工具，从软件的命名上就可以看出来了——remote sync。</p>
+<ul>
+<li>特性</li>
+</ul>
+<p>它的特性如下：
+可以镜像保存整个目录树和文件系统。
+可以很容易做到保持原来文件的权限、时间、软硬链接等等。
+无须特殊权限即可安装。
+快速：第一次同步时 rsync 会复制全部内容，但在下一次只传输修改过的文件。rsync 在传输数据的过程中可以实行压缩及解压缩操作，因此可以使用更少的带宽。
+安全：可以使用scp、ssh等方式来传输文件，当然也可以通过直接的socket连接。
+支持匿名传输，以方便进行网站镜象。</p>
+<ul>
+<li>实战</li>
+</ul>
+<p>作为镜像备份，至少需要一台服务端与一台客户端。 两台机器上都需要安装rsync，通常很多Linux发行版是默认包括这个软件的。</p>
+<p>源码包安装：</p>
+<div class="codehilite"><pre> <span class="c">#tar xvf rsync-XXX.tar.gz</span>
+ <span class="c">#cd rsync-XXX</span>
+ <span class="c">#./configure --prefix=/usr ; make ; make install</span>
+</pre></div>
+
+
+<p>在开展备份之前，首先要在服务器端做好配置 ...</p> 
+			<a class="btn primary xsmall" href="./rsyncbi-ji.html">more ...</a>
+		</div>
+	</div>	
+	<hr />
+		<div class='article'>
 		<h1><a href="./ios7.html">iOS7!</a></h1>
 		<div class="well small"><footer class="post-info">
 <span class="label">Date</span>
@@ -409,8 +456,18 @@
 
 <li class="nav-header"><h4><i class="icon-tags icon-large"></i>Tags</h4></li>
 <li class="tag-4">
-    <a href="./tag/html.html">
-        <i class="icon-tag icon-large"></i>html
+    <a href="./tag/rsync.html">
+        <i class="icon-tag icon-large"></i>rsync
+    </a>
+</li>
+<li class="tag-4">
+    <a href="./tag/Python.html">
+        <i class="icon-tag icon-large"></i>Python
+    </a>
+</li>
+<li class="tag-4">
+    <a href="./tag/Git.html">
+        <i class="icon-tag icon-large"></i>Git
     </a>
 </li>
 <li class="tag-4">
@@ -424,23 +481,18 @@
     </a>
 </li>
 <li class="tag-4">
-    <a href="./tag/Git.html">
-        <i class="icon-tag icon-large"></i>Git
+    <a href="./tag/xbox.html">
+        <i class="icon-tag icon-large"></i>xbox
+    </a>
+</li>
+<li class="tag-4">
+    <a href="./tag/html.html">
+        <i class="icon-tag icon-large"></i>html
     </a>
 </li>
 <li class="tag-4">
     <a href="./tag/Linux.html">
         <i class="icon-tag icon-large"></i>Linux
-    </a>
-</li>
-<li class="tag-4">
-    <a href="./tag/Python.html">
-        <i class="icon-tag icon-large"></i>Python
-    </a>
-</li>
-<li class="tag-4">
-    <a href="./tag/xbox.html">
-        <i class="icon-tag icon-large"></i>xbox
     </a>
 </li>
 <li class="tag-4">

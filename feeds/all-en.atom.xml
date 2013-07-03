@@ -1,5 +1,200 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>iScirocco</title><link href="http://www.isciro.com/" rel="alternate"></link><link href="http://www.isciro.com/feeds/all-en.atom.xml" rel="self"></link><id>http://www.isciro.com/</id><updated>2013-06-10T09:30:00+08:00</updated><entry><title>iOS7!</title><link href="http://www.isciro.com/ios7.html" rel="alternate"></link><updated>2013-06-10T09:30:00+08:00</updated><author><name>DennyW</name></author><id>tag:www.isciro.com,2013-06-10:ios7.html</id><summary type="html">&lt;p&gt;iOS7最近在微博知乎都被讨论的热火朝天，大部分是‘bug’、‘设计缺陷’等等等。个人使用几天后的一些观点： &lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>iScirocco</title><link href="http://www.isciro.com/" rel="alternate"></link><link href="http://www.isciro.com/feeds/all-en.atom.xml" rel="self"></link><id>http://www.isciro.com/</id><updated>2013-06-20T12:30:00+08:00</updated><entry><title>rsync笔记</title><link href="http://www.isciro.com/rsyncbi-ji.html" rel="alternate"></link><updated>2013-06-20T12:30:00+08:00</updated><author><name>DennyW</name></author><id>tag:www.isciro.com,2013-06-20:rsyncbi-ji.html</id><summary type="html">&lt;p&gt;看书看到rsync相关的内容，于是自己做了些小实验，巩固一下知识点。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;简介&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;rsync是类unix系统下的数据镜像备份工具，从软件的命名上就可以看出来了——remote sync。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;特性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;它的特性如下：
+可以镜像保存整个目录树和文件系统。
+可以很容易做到保持原来文件的权限、时间、软硬链接等等。
+无须特殊权限即可安装。
+快速：第一次同步时 rsync 会复制全部内容，但在下一次只传输修改过的文件。rsync 在传输数据的过程中可以实行压缩及解压缩操作，因此可以使用更少的带宽。
+安全：可以使用scp、ssh等方式来传输文件，当然也可以通过直接的socket连接。
+支持匿名传输，以方便进行网站镜象。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;实战&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;作为镜像备份，至少需要一台服务端与一台客户端。 两台机器上都需要安装rsync，通常很多Linux发行版是默认包括这个软件的。&lt;/p&gt;
+&lt;p&gt;源码包安装：&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt; &lt;span class="c"&gt;#tar xvf rsync-XXX.tar.gz&lt;/span&gt;
+ &lt;span class="c"&gt;#cd rsync-XXX&lt;/span&gt;
+ &lt;span class="c"&gt;#./configure --prefix=/usr ; make ; make install&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;在开展备份之前，首先要在服务器端做好配置。 对应的文件为rsyncd.conf（主配置文件）/rsyncd.secrets（密码文件）/rsyncd.motd（服务器信息）。我把它们放在/etc/rsyncd/文件夹下统一管理。&lt;/p&gt;
+&lt;p&gt;这些文件默认不存在，需要手动创建&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt; &lt;span class="c"&gt;#touch /etc/rsyncd.conf&lt;/span&gt;
+ &lt;span class="c"&gt;#touch /etc/rsyncd.secrets&lt;/span&gt;
+ &lt;span class="c"&gt;#chmod 600 /etc/rsyncd.secrets  #需要调整权限，否则同步将失败&lt;/span&gt;
+ &lt;span class="c"&gt;#touch /etc/rsyncd.motd&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;首先配置rsyncd.conf， 我想要备份的是/root/dywu/shtool 文件夹，但是不包括WF子文件夹。&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="n"&gt;pid&lt;/span&gt; &lt;span class="n"&gt;file&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;rsyncd&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pid&lt;/span&gt;                  &lt;span class="err"&gt;#此文件将会记录&lt;/span&gt;&lt;span class="n"&gt;rsync&lt;/span&gt;&lt;span class="err"&gt;进程的&lt;/span&gt;&lt;span class="n"&gt;pid&lt;/span&gt;&lt;span class="err"&gt;号&lt;/span&gt;
+&lt;span class="n"&gt;port&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;873&lt;/span&gt;                                            &lt;span class="err"&gt;#默认端口&lt;/span&gt;&lt;span class="mi"&gt;873&lt;/span&gt;
+&lt;span class="n"&gt;address&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mf"&gt;172.29.175.193&lt;/span&gt;
+&lt;span class="cp"&gt;#uid = nobody&lt;/span&gt;
+&lt;span class="cp"&gt;#gid = nobody  &lt;/span&gt;
+&lt;span class="n"&gt;uid&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;root&lt;/span&gt;
+&lt;span class="n"&gt;gid&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;rootuse&lt;/span&gt; &lt;span class="n"&gt;chroot&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;yes&lt;/span&gt;
+&lt;span class="n"&gt;read&lt;/span&gt; &lt;span class="n"&gt;only&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;yes&lt;/span&gt;
+
+&lt;span class="cp"&gt;#limit access to private LANs&lt;/span&gt;
+&lt;span class="n"&gt;hosts&lt;/span&gt; &lt;span class="n"&gt;allow&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;172.29.174.131&lt;/span&gt;                    &lt;span class="err"&gt;#这里设定允许&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="err"&gt;拒绝同步的客户端&lt;/span&gt;&lt;span class="n"&gt;ip&lt;/span&gt;&lt;span class="err"&gt;或者网段&lt;/span&gt;
+&lt;span class="n"&gt;hosts&lt;/span&gt; &lt;span class="n"&gt;deny&lt;/span&gt;&lt;span class="o"&gt;=*&lt;/span&gt;
+
+&lt;span class="n"&gt;max&lt;/span&gt; &lt;span class="n"&gt;connections&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;
+&lt;span class="n"&gt;motd&lt;/span&gt; &lt;span class="n"&gt;file&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;rsyncd&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;rsyncd&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;motd&lt;/span&gt;          &lt;span class="err"&gt;#服务端信息&lt;/span&gt;
+
+&lt;span class="cp"&gt;#This will give you a separate log file&lt;/span&gt;
+&lt;span class="cp"&gt;#log file = /var/log/rsync.log&lt;/span&gt;
+
+&lt;span class="cp"&gt;#This will log every file transferred - up to 85,000+ per user, per sync&lt;/span&gt;
+&lt;span class="cp"&gt;#transfer logging = yes&lt;/span&gt;
+
+&lt;span class="n"&gt;log&lt;/span&gt; &lt;span class="n"&gt;format&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;t&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;
+&lt;span class="n"&gt;syslog&lt;/span&gt; &lt;span class="n"&gt;facility&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;local3&lt;/span&gt;
+&lt;span class="n"&gt;timeout&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;300&lt;/span&gt;
+
+&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;rhelshtool&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;                                             &lt;span class="err"&gt;#模块定义&lt;/span&gt;
+&lt;span class="n"&gt;path&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dywu&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;shtool&lt;/span&gt;
+&lt;span class="n"&gt;list&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;yes&lt;/span&gt;
+&lt;span class="n"&gt;ignore&lt;/span&gt; &lt;span class="n"&gt;errors&lt;/span&gt;
+&lt;span class="n"&gt;auth&lt;/span&gt; &lt;span class="n"&gt;users&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;root&lt;/span&gt;                                     &lt;span class="err"&gt;#认证用户&lt;/span&gt;
+&lt;span class="n"&gt;secrets&lt;/span&gt; &lt;span class="n"&gt;file&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;rsyncd&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;rsyncd&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;secrets&lt;/span&gt;
+&lt;span class="n"&gt;comment&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;This&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;shell&lt;/span&gt; &lt;span class="n"&gt;tool&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;
+&lt;span class="n"&gt;exclude&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;WF&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;                                         &lt;span class="err"&gt;#排除的文件夹&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;配置完之后，启动服务。&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt; &lt;span class="c"&gt;#/usr/bin/rsync --daemon  --config=/etc/rsyncd/rsyncd.conf&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;查看启动成功与否&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt; &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="n"&gt;lsof&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;873&lt;/span&gt;
+ &lt;span class="n"&gt;COMMAND&lt;/span&gt;  &lt;span class="n"&gt;PID&lt;/span&gt; &lt;span class="n"&gt;USER&lt;/span&gt;   &lt;span class="n"&gt;FD&lt;/span&gt;   &lt;span class="n"&gt;TYPE&lt;/span&gt;   &lt;span class="n"&gt;DEVICE&lt;/span&gt; &lt;span class="n"&gt;SIZE&lt;/span&gt; &lt;span class="n"&gt;NODE&lt;/span&gt; &lt;span class="n"&gt;NAME&lt;/span&gt;
+ &lt;span class="n"&gt;rsync&lt;/span&gt;   &lt;span class="mi"&gt;4590&lt;/span&gt; &lt;span class="n"&gt;root&lt;/span&gt;    &lt;span class="mi"&gt;3u&lt;/span&gt;  &lt;span class="n"&gt;IPv6&lt;/span&gt; &lt;span class="mi"&gt;36209018&lt;/span&gt;       &lt;span class="n"&gt;TCP&lt;/span&gt; &lt;span class="o"&gt;*:&lt;/span&gt;&lt;span class="n"&gt;rsync&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;LISTEN&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+ &lt;span class="n"&gt;rsync&lt;/span&gt;   &lt;span class="mi"&gt;4590&lt;/span&gt; &lt;span class="n"&gt;root&lt;/span&gt;    &lt;span class="mi"&gt;5u&lt;/span&gt;  &lt;span class="n"&gt;IPv4&lt;/span&gt; &lt;span class="mi"&gt;36209019&lt;/span&gt;       &lt;span class="n"&gt;TCP&lt;/span&gt; &lt;span class="o"&gt;*:&lt;/span&gt;&lt;span class="n"&gt;rsync&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;LISTEN&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;来到客户端机器，通过rsync命令同步服务器端文件夹。
+简单语法通过man命令来查询：&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="n"&gt;SYNOPSIS&lt;/span&gt;
+   &lt;span class="n"&gt;rsync&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;OPTION&lt;/span&gt;&lt;span class="p"&gt;]...&lt;/span&gt; &lt;span class="n"&gt;SRC&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;SRC&lt;/span&gt;&lt;span class="p"&gt;]...&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;USER&lt;/span&gt;&lt;span class="err"&gt;@&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="n"&gt;HOST&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;DEST&lt;/span&gt;
+
+   &lt;span class="n"&gt;rsync&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;OPTION&lt;/span&gt;&lt;span class="p"&gt;]...&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;USER&lt;/span&gt;&lt;span class="err"&gt;@&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="n"&gt;HOST&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;SRC&lt;/span&gt; &lt;span class="n"&gt;DEST&lt;/span&gt;
+
+   &lt;span class="n"&gt;rsync&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;OPTION&lt;/span&gt;&lt;span class="p"&gt;]...&lt;/span&gt; &lt;span class="n"&gt;SRC&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;SRC&lt;/span&gt;&lt;span class="p"&gt;]...&lt;/span&gt; &lt;span class="n"&gt;DEST&lt;/span&gt;
+
+   &lt;span class="n"&gt;rsync&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;OPTION&lt;/span&gt;&lt;span class="p"&gt;]...&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;USER&lt;/span&gt;&lt;span class="err"&gt;@&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="n"&gt;HOST&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;SRC&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;DEST&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+
+   &lt;span class="n"&gt;rsync&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;OPTION&lt;/span&gt;&lt;span class="p"&gt;]...&lt;/span&gt; &lt;span class="n"&gt;SRC&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;SRC&lt;/span&gt;&lt;span class="p"&gt;]...&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;USER&lt;/span&gt;&lt;span class="err"&gt;@&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="n"&gt;HOST&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;DEST&lt;/span&gt;
+
+   &lt;span class="n"&gt;rsync&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;OPTION&lt;/span&gt;&lt;span class="p"&gt;]...&lt;/span&gt; &lt;span class="n"&gt;rsync&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="c1"&gt;//[USER@]HOST[:PORT]/SRC [DEST]&lt;/span&gt;
+
+   &lt;span class="n"&gt;rsync&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;OPTION&lt;/span&gt;&lt;span class="p"&gt;]...&lt;/span&gt; &lt;span class="n"&gt;SRC&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;SRC&lt;/span&gt;&lt;span class="p"&gt;]...&lt;/span&gt; &lt;span class="n"&gt;rsync&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="c1"&gt;//[USER@]HOST[:PORT]/DEST&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;来看rsync的一些基本概念：&lt;/p&gt;
+&lt;p&gt;rsync有六种不同的工作模式：&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="mf"&gt;1.&lt;/span&gt; &lt;span class="err"&gt;拷贝本地文件；当&lt;/span&gt;&lt;span class="n"&gt;SRC&lt;/span&gt;&lt;span class="err"&gt;和&lt;/span&gt;&lt;span class="n"&gt;DES&lt;/span&gt;&lt;span class="err"&gt;路径信息都不包含有单个冒号&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;:&amp;quot;&lt;/span&gt;&lt;span class="err"&gt;分隔符时就启动这种工作模式。&lt;/span&gt;
+&lt;span class="mf"&gt;2.&lt;/span&gt; &lt;span class="err"&gt;使用一个远程&lt;/span&gt;&lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="err"&gt;程序（如&lt;/span&gt;&lt;span class="n"&gt;rsh&lt;/span&gt;&lt;span class="err"&gt;、&lt;/span&gt;&lt;span class="n"&gt;ssh&lt;/span&gt;&lt;span class="err"&gt;）来实现将本地机器的内容拷贝到远程机器。当&lt;/span&gt;&lt;span class="n"&gt;DST&lt;/span&gt;&lt;span class="err"&gt;路径地址包含单个冒号&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;:&amp;quot;&lt;/span&gt;&lt;span class="err"&gt;分隔符时启动该模式。&lt;/span&gt;
+&lt;span class="mf"&gt;3.&lt;/span&gt; &lt;span class="err"&gt;使用一个远程&lt;/span&gt;&lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="err"&gt;程序（如&lt;/span&gt;&lt;span class="n"&gt;rsh&lt;/span&gt;&lt;span class="err"&gt;、&lt;/span&gt;&lt;span class="n"&gt;ssh&lt;/span&gt;&lt;span class="err"&gt;）来实现将远程机器的内容拷贝到本地机器。当&lt;/span&gt;&lt;span class="n"&gt;SRC&lt;/span&gt;&lt;span class="err"&gt;地址路径包含单个冒号&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;:&amp;quot;&lt;/span&gt;&lt;span class="err"&gt;分隔符时启动该模式。&lt;/span&gt;
+&lt;span class="mf"&gt;4.&lt;/span&gt; &lt;span class="err"&gt;从远程&lt;/span&gt;&lt;span class="n"&gt;rsync&lt;/span&gt;&lt;span class="err"&gt;服务器中拷贝文件到本地机。当&lt;/span&gt;&lt;span class="n"&gt;SRC&lt;/span&gt;&lt;span class="err"&gt;路径信息包含&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;::&amp;quot;&lt;/span&gt;&lt;span class="err"&gt;分隔符时启动该模式。&lt;/span&gt;
+&lt;span class="mf"&gt;5.&lt;/span&gt; &lt;span class="err"&gt;从本地机器拷贝文件到远程&lt;/span&gt;&lt;span class="n"&gt;rsync&lt;/span&gt;&lt;span class="err"&gt;服务器中。当&lt;/span&gt;&lt;span class="n"&gt;DST&lt;/span&gt;&lt;span class="err"&gt;路径信息包含&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;::&amp;quot;&lt;/span&gt;&lt;span class="err"&gt;分隔符时启动该模式。&lt;/span&gt;
+&lt;span class="mf"&gt;6.&lt;/span&gt; &lt;span class="err"&gt;列远程机的文件列表。这类似于&lt;/span&gt;&lt;span class="n"&gt;rsync&lt;/span&gt;&lt;span class="err"&gt;传输，不过只要在命令中省略掉本地机信息即可。&lt;/span&gt;   &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="err"&gt;以&lt;/span&gt;&lt;span class="n"&gt;archive&lt;/span&gt;&lt;span class="err"&gt;模式操作、复制目录、符号连接&lt;/span&gt; &lt;span class="err"&gt;相当于&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;rlptgoD&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;rsync中的参数&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;r&lt;/span&gt; &lt;span class="err"&gt;是递归&lt;/span&gt;
+&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;l&lt;/span&gt; &lt;span class="err"&gt;是链接文件，意思是拷贝链接文件；&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;p&lt;/span&gt; &lt;span class="err"&gt;表示保持文件原有权限；&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;t&lt;/span&gt; &lt;span class="err"&gt;保持文件原有时间；&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;g&lt;/span&gt; &lt;span class="err"&gt;保持文件原有用户组；&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;o&lt;/span&gt; &lt;span class="err"&gt;保持文件原有属主；&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;D&lt;/span&gt; &lt;span class="err"&gt;相当于块设备文件；&lt;/span&gt;
+&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;z&lt;/span&gt; &lt;span class="err"&gt;传输时压缩；&lt;/span&gt;
+&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;P&lt;/span&gt; &lt;span class="err"&gt;传输进度；&lt;/span&gt;
+&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt; &lt;span class="err"&gt;传输时的进度等信息，和&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;P&lt;/span&gt;&lt;span class="err"&gt;有点关系，自己试试。可以看文档；&lt;/span&gt;
+&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt; &lt;span class="n"&gt;ssh&lt;/span&gt;&lt;span class="err"&gt;的参数建立起加密的连接。&lt;/span&gt;
+&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;u&lt;/span&gt;&lt;span class="err"&gt;只进行更新，防止本地新文件被重写，注意两者机器的时钟的同时&lt;/span&gt;
+&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;progress&lt;/span&gt;&lt;span class="err"&gt;是指显示出详细的进度情况&lt;/span&gt;
+&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;delete&lt;/span&gt;&lt;span class="err"&gt;是指如果服务器端删除了这一文件，那么客户端也相应把文件删除，保持真正的一致&lt;/span&gt;
+&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;password&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;file&lt;/span&gt;&lt;span class="o"&gt;=/&lt;/span&gt;&lt;span class="n"&gt;password&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;file&lt;/span&gt;&lt;span class="err"&gt;来指定密码文件，这样就可以在脚本中使用而无需交互式地输入验证密码了，这里需要注意的是这份密码文件权限属性要设得只有属主可读。&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;首先列出rsync服务器端提供的同步内容：&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="cp"&gt;# rsync  root@172.29.175.193::  #通常需要加上 --list-only 参数，视版本而定&lt;/span&gt;
+
+&lt;span class="o"&gt;++++++++++++++++++++++++++++++++++++++++++++++&lt;/span&gt;
+  &lt;span class="n"&gt;Welcome&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;use&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;dywu&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt; &lt;span class="n"&gt;rsync&lt;/span&gt; &lt;span class="n"&gt;services&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;
+           &lt;span class="mi"&gt;2013&lt;/span&gt;&lt;span class="o"&gt;--??&lt;/span&gt;
+  &lt;span class="o"&gt;++++++++++++++++++++++++++++++++++++++++++++++&lt;/span&gt;
+
+&lt;span class="n"&gt;rhelshtool&lt;/span&gt;      &lt;span class="n"&gt;This&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="n"&gt;shell&lt;/span&gt; &lt;span class="n"&gt;tool&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;出现了服务器端设定好的文件夹资源，说明配置成功，接下来开始同步&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="cp"&gt;# rsync -avzP root@172.29.175.193::rhelshtool rhelshtool  &lt;/span&gt;
+&lt;span class="o"&gt;++++++++++++++++++++++++++++++++++++++++++++++&lt;/span&gt;
+  &lt;span class="n"&gt;Welcome&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;use&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;dywu&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt; &lt;span class="n"&gt;rsync&lt;/span&gt; &lt;span class="n"&gt;services&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;
+           &lt;span class="mi"&gt;2013&lt;/span&gt;&lt;span class="o"&gt;--??&lt;/span&gt;
+  &lt;span class="o"&gt;++++++++++++++++++++++++++++++++++++++++++++++&lt;/span&gt;
+
+&lt;span class="nl"&gt;Password:&lt;/span&gt;
+
+&lt;span class="cp"&gt;#此处输入rsync.secrets中设定好的密码。&lt;/span&gt;
+
+&lt;span class="n"&gt;receiving&lt;/span&gt; &lt;span class="n"&gt;file&lt;/span&gt; &lt;span class="n"&gt;list&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt;
+&lt;span class="mi"&gt;233&lt;/span&gt; &lt;span class="n"&gt;files&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;consider&lt;/span&gt;
+&lt;span class="n"&gt;created&lt;/span&gt; &lt;span class="n"&gt;directory&lt;/span&gt; &lt;span class="n"&gt;rhelshtool&lt;/span&gt;
+&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;
+&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;git&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;
+&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;git&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;branches&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;
+&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;git&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;hooks&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;
+&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;git&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;
+&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;git&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;logs&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;
+&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;git&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;logs&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;refs&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;
+&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;git&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;logs&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;refs&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;heads&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;
+&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;git&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;logs&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;refs&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;remotes&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;
+
+&lt;span class="err"&gt;…&lt;/span&gt;                &lt;span class="err"&gt;#略去文件列表&lt;/span&gt;
+&lt;span class="n"&gt;pipe&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;output&lt;/span&gt;
+         &lt;span class="mi"&gt;446&lt;/span&gt; &lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;   &lt;span class="mf"&gt;12.81&lt;/span&gt;&lt;span class="n"&gt;kB&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;    &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mo"&gt;00&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mo"&gt;00&lt;/span&gt;  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;134&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mf"&gt;98.3&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="mi"&gt;233&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;pipe&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;passwd&lt;/span&gt;
+         &lt;span class="mi"&gt;535&lt;/span&gt; &lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;   &lt;span class="mf"&gt;15.37&lt;/span&gt;&lt;span class="n"&gt;kB&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;    &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mo"&gt;00&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mo"&gt;00&lt;/span&gt;  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;135&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mf"&gt;98.7&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="mi"&gt;233&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;taglist&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;taglist&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sh&lt;/span&gt;
+         &lt;span class="mi"&gt;594&lt;/span&gt; &lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;   &lt;span class="mf"&gt;17.06&lt;/span&gt;&lt;span class="n"&gt;kB&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;    &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mo"&gt;00&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mo"&gt;00&lt;/span&gt;  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;136&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mf"&gt;99.6&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="mi"&gt;233&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;taglist&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;xml&lt;/span&gt;
+        &lt;span class="mi"&gt;8988&lt;/span&gt; &lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;  &lt;span class="mf"&gt;250.78&lt;/span&gt;&lt;span class="n"&gt;kB&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;    &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mo"&gt;00&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mo"&gt;00&lt;/span&gt;  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;137&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mf"&gt;100.0&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="mi"&gt;233&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;sent&lt;/span&gt; &lt;span class="mi"&gt;2856&lt;/span&gt; &lt;span class="n"&gt;bytes&lt;/span&gt;  &lt;span class="n"&gt;received&lt;/span&gt; &lt;span class="mi"&gt;96876&lt;/span&gt; &lt;span class="n"&gt;bytes&lt;/span&gt;  &lt;span class="mf"&gt;66488.00&lt;/span&gt; &lt;span class="n"&gt;bytes&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;sec&lt;/span&gt;
+
+&lt;span class="n"&gt;total&lt;/span&gt; &lt;span class="n"&gt;size&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="mi"&gt;209638&lt;/span&gt;  &lt;span class="n"&gt;speedup&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="mf"&gt;2.10&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;至此，同步成功。&lt;/p&gt;
+&lt;p&gt;命令中若带有 --delete 参数，则表示客户端上的数据要与服务器端完全一致，如果目录中有服务器上不存在的文件，则删除。最终目的是让目录上的数据完全与服务器上保持一致；用的时候要 小心点，最好不要把已经有重要数所据的目录，当做本地更新目录，否则会把你的数据全部删除。&lt;/p&gt;
+&lt;p&gt;生产环境下经常会将rsync配置为cron job，此时需要加上 --password-file 参数。&lt;/p&gt;
+&lt;p&gt;当我们以root用户登录rsync服务器同步数据时，密码将读取rsyncd.secrets这个文件。这个文件内容只是root用户的密码。我们要如下做；&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="c"&gt;# touch rsyncd.secrets&lt;/span&gt;
+&lt;span class="c"&gt;# chmod 600 rsyncd.secrets          #注意权限设置&lt;/span&gt;
+&lt;span class="c"&gt;# echo &amp;quot;dywu&amp;quot;&amp;gt; rsyncd.secrets&lt;/span&gt;
+
+&lt;span class="c"&gt;# rsync -avzP  --delete  --password-file=rsyncd.secrets  root@172.29.175.193::rhelshtool rhelshtool&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;这样的话就省略了交互输入密码的阶段，简单的配置crontab之后，就可以实现定期备份的功能了。&lt;/p&gt;
+&lt;p&gt;另外，自己写了个简单的脚本用来管理rsync进程。 如下：&lt;/p&gt;</summary><category term="rsync"></category></entry><entry><title>iOS7!</title><link href="http://www.isciro.com/ios7.html" rel="alternate"></link><updated>2013-06-10T09:30:00+08:00</updated><author><name>DennyW</name></author><id>tag:www.isciro.com,2013-06-10:ios7.html</id><summary type="html">&lt;p&gt;iOS7最近在微博知乎都被讨论的热火朝天，大部分是‘bug’、‘设计缺陷’等等等。个人使用几天后的一些观点： &lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;第一，目前只是开发版beta1，可以说只是个概念产品，稳定版肯定还会有更多的修复和完善， 特别是那些莫民奇妙丑的图标，还有一些明显是两个团队做出来的交互细节。 我相信苹果还没沦落到对这些是个人就能感觉到的低级失误熟视无睹。&lt;/p&gt;

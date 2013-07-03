@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>iScirocco - Git</title>
+    <title>iScirocco - rsync</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -97,11 +97,11 @@
         <div class="span9" id="content">
                     
 		<div class='article'>
-		<h1><a href="../pelican-git-pagede-blogjia-she.html">Pelican + Git Page的Blog架设</a></h1>
+		<h1><a href="../rsyncbi-ji.html">rsync笔记</a></h1>
 		<div class="well small"><footer class="post-info">
 <span class="label">Date</span>
-<abbr class="published" title="2013-04-10T12:40:00">
-	<i class="icon-calendar"></i>三 10 四月 2013
+<abbr class="published" title="2013-06-20T12:30:00">
+	<i class="icon-calendar"></i>四 20 六月 2013
 </abbr>
 <span class="label">By</span>
 <a href="../author/dennyw.html"><i class="icon-user"></i>DennyW</a>
@@ -110,34 +110,36 @@
 
 	
 <span class="label">Tags</span> 
-	<a href="../tag/git.html"><i class="icon-tag"></i>Git</a>
-	<a href="../tag/python.html"><i class="icon-tag"></i>Python</a>
+	<a href="../tag/rsync.html"><i class="icon-tag"></i>rsync</a>
 </footer><!-- /.post-info --></div>
-		<div class="summary"><p>之前尝试了购买主机空间加上WordPress的组合，弄好了以后基本很少上了。部署完以后全图形化界面的操作总感觉少了点「Geek」的感觉。
-后来看到某篇文章，说的是利用Github提供的pages服务（免费而且无限制），正好原来的空间也差不多到期了，于是就趁着空闲时间尝试搭建了一下，的确非常方便。</p>
-<p><strong>自己的系统： <code>Mac OSX 10.8.3</code></strong></p>
-<p>搭建的过程和Linux环境下基本相同。</p>
-<p><strong>首先安装<code>PIP</code></strong></p>
-<div class="codehilite"><pre><span class="err">$</span> <span class="n">curl</span> <span class="o">-</span><span class="n">O</span> <span class="n">https</span><span class="o">:</span><span class="c1">//raw.github.com/pypa/pip/master/contrib/get-pip.py</span>
-<span class="err">$</span> <span class="n">python</span> <span class="n">get</span><span class="o">-</span><span class="n">pip</span><span class="p">.</span><span class="n">py</span>
+		<div class="summary"><p>看书看到rsync相关的内容，于是自己做了些小实验，巩固一下知识点。</p>
+<ul>
+<li>简介</li>
+</ul>
+<p>rsync是类unix系统下的数据镜像备份工具，从软件的命名上就可以看出来了——remote sync。</p>
+<ul>
+<li>特性</li>
+</ul>
+<p>它的特性如下：
+可以镜像保存整个目录树和文件系统。
+可以很容易做到保持原来文件的权限、时间、软硬链接等等。
+无须特殊权限即可安装。
+快速：第一次同步时 rsync 会复制全部内容，但在下一次只传输修改过的文件。rsync 在传输数据的过程中可以实行压缩及解压缩操作，因此可以使用更少的带宽。
+安全：可以使用scp、ssh等方式来传输文件，当然也可以通过直接的socket连接。
+支持匿名传输，以方便进行网站镜象。</p>
+<ul>
+<li>实战</li>
+</ul>
+<p>作为镜像备份，至少需要一台服务端与一台客户端。 两台机器上都需要安装rsync，通常很多Linux发行版是默认包括这个软件的。</p>
+<p>源码包安装：</p>
+<div class="codehilite"><pre> <span class="c">#tar xvf rsync-XXX.tar.gz</span>
+ <span class="c">#cd rsync-XXX</span>
+ <span class="c">#./configure --prefix=/usr ; make ; make install</span>
 </pre></div>
 
 
-<p><strong>安装pelican以及markdown</strong></p>
-<div class="codehilite"><pre><span class="err">$</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">pelican</span>
-<span class="err">$</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">Markdown</span>
-</pre></div>
-
-
-<p><strong>建立blog目录</strong></p>
-<div class="codehilite"><pre><span class="err">$</span> <span class="n">mkdir</span> <span class="n">myblog</span>
-<span class="err">$</span> <span class="n">cd</span> <span class="n">myblog</span>
-</pre></div>
-
-
-<p><strong>开始创建</strong></p>
-<div class="codehilite"><pre><span class="err">$</span> <span class="n">pelican ...</span></pre></div> 
-			<a class="btn primary xsmall" href="../pelican-git-pagede-blogjia-she.html">more ...</a>
+<p>在开展备份之前，首先要在服务器端做好配置 ...</p> 
+			<a class="btn primary xsmall" href="../rsyncbi-ji.html">more ...</a>
 		</div>
 	</div>	
 	<hr />
