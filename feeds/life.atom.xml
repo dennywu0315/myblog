@@ -13,5 +13,5 @@
 &lt;p&gt;附上&lt;a href="http://www.zhihu.com/question/21091537"&gt;知乎&lt;/a&gt;上关于xbox one新主机的一些点评与吐槽， 挺有趣的。&lt;/p&gt;</summary><category term="xbox"></category></entry><entry><title>Hello New World</title><link href="http://www.isciro.com/hello-new-world.html" rel="alternate"></link><updated>2013-03-16T16:43:00+08:00</updated><author><name>DennyW</name></author><id>tag:www.isciro.com,2013-03-16:hello-new-world.html</id><summary type="html">&lt;p&gt;这几天折腾完了基于git-page和pelican的博客架设，学着了不少好玩的新东西。 接下来就要开始往里边添内容了， 半年多前还在TB买了空间和域名， 架了个简单的基于WP的blog， 惭愧的是搞完以后基本就没怎么上了。 这次把域名重新绑到了这个新的blog。 希望能够在这个好玩的平台上坚持下去。&lt;/p&gt;
 &lt;p&gt;下周日就要举行婚礼了。 心情还挺复杂的，既紧张又期待。 马上就要拥有自己的小家庭， 但常说成家立业， 事业上也要加把劲了。&lt;/p&gt;
 &lt;p&gt;希望一切都顺利吧！&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="n"&gt;echo&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;hello new world&amp;quot;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;echo&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;hello new world&amp;quot;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;</summary></entry></feed>

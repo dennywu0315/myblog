@@ -19,7 +19,7 @@
 &lt;/ul&gt;
 &lt;p&gt;作为镜像备份，至少需要一台服务端与一台客户端。 两台机器上都需要安装rsync，通常很多Linux发行版是默认包括这个软件的。&lt;/p&gt;
 &lt;p&gt;源码包安装：&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt; &lt;span class="c"&gt;#tar xvf rsync-XXX.tar.gz&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt; &lt;span class="c"&gt;#tar xvf rsync-XXX.tar.gz&lt;/span&gt;
  &lt;span class="c"&gt;#cd rsync-XXX&lt;/span&gt;
  &lt;span class="c"&gt;#./configure --prefix=/usr ; make ; make install&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -27,7 +27,7 @@
 
 &lt;p&gt;在开展备份之前，首先要在服务器端做好配置。 对应的文件为rsyncd.conf（主配置文件）/rsyncd.secrets（密码文件）/rsyncd.motd（服务器信息）。我把它们放在/etc/rsyncd/文件夹下统一管理。&lt;/p&gt;
 &lt;p&gt;这些文件默认不存在，需要手动创建&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt; &lt;span class="c"&gt;#touch /etc/rsyncd.conf&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt; &lt;span class="c"&gt;#touch /etc/rsyncd.conf&lt;/span&gt;
  &lt;span class="c"&gt;#touch /etc/rsyncd.secrets&lt;/span&gt;
  &lt;span class="c"&gt;#chmod 600 /etc/rsyncd.secrets  #需要调整权限，否则同步将失败&lt;/span&gt;
  &lt;span class="c"&gt;#touch /etc/rsyncd.motd&lt;/span&gt;
@@ -35,7 +35,7 @@
 
 
 &lt;p&gt;首先配置rsyncd.conf， 我想要备份的是/root/dywu/shtool 文件夹，但是不包括WF子文件夹。&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="n"&gt;pid&lt;/span&gt; &lt;span class="n"&gt;file&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;rsyncd&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pid&lt;/span&gt;                  &lt;span class="err"&gt;#此文件将会记录&lt;/span&gt;&lt;span class="n"&gt;rsync&lt;/span&gt;&lt;span class="err"&gt;进程的&lt;/span&gt;&lt;span class="n"&gt;pid&lt;/span&gt;&lt;span class="err"&gt;号&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;pid&lt;/span&gt; &lt;span class="n"&gt;file&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;rsyncd&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pid&lt;/span&gt;                  &lt;span class="err"&gt;#此文件将会记录&lt;/span&gt;&lt;span class="n"&gt;rsync&lt;/span&gt;&lt;span class="err"&gt;进程的&lt;/span&gt;&lt;span class="n"&gt;pid&lt;/span&gt;&lt;span class="err"&gt;号&lt;/span&gt;
 &lt;span class="n"&gt;port&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;873&lt;/span&gt;                                            &lt;span class="err"&gt;#默认端口&lt;/span&gt;&lt;span class="mi"&gt;873&lt;/span&gt;
 &lt;span class="n"&gt;address&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mf"&gt;172.29.175.193&lt;/span&gt;
 &lt;span class="cp"&gt;#uid = nobody&lt;/span&gt;
@@ -73,12 +73,12 @@
 
 
 &lt;p&gt;配置完之后，启动服务。&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt; &lt;span class="c"&gt;#/usr/bin/rsync --daemon  --config=/etc/rsyncd/rsyncd.conf&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt; &lt;span class="c"&gt;#/usr/bin/rsync --daemon  --config=/etc/rsyncd/rsyncd.conf&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;查看启动成功与否&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt; &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="n"&gt;lsof&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;873&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt; &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="n"&gt;lsof&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;873&lt;/span&gt;
  &lt;span class="n"&gt;COMMAND&lt;/span&gt;  &lt;span class="n"&gt;PID&lt;/span&gt; &lt;span class="n"&gt;USER&lt;/span&gt;   &lt;span class="n"&gt;FD&lt;/span&gt;   &lt;span class="n"&gt;TYPE&lt;/span&gt;   &lt;span class="n"&gt;DEVICE&lt;/span&gt; &lt;span class="n"&gt;SIZE&lt;/span&gt; &lt;span class="n"&gt;NODE&lt;/span&gt; &lt;span class="n"&gt;NAME&lt;/span&gt;
  &lt;span class="n"&gt;rsync&lt;/span&gt;   &lt;span class="mi"&gt;4590&lt;/span&gt; &lt;span class="n"&gt;root&lt;/span&gt;    &lt;span class="mi"&gt;3u&lt;/span&gt;  &lt;span class="n"&gt;IPv6&lt;/span&gt; &lt;span class="mi"&gt;36209018&lt;/span&gt;       &lt;span class="n"&gt;TCP&lt;/span&gt; &lt;span class="o"&gt;*:&lt;/span&gt;&lt;span class="n"&gt;rsync&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;LISTEN&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
  &lt;span class="n"&gt;rsync&lt;/span&gt;   &lt;span class="mi"&gt;4590&lt;/span&gt; &lt;span class="n"&gt;root&lt;/span&gt;    &lt;span class="mi"&gt;5u&lt;/span&gt;  &lt;span class="n"&gt;IPv4&lt;/span&gt; &lt;span class="mi"&gt;36209019&lt;/span&gt;       &lt;span class="n"&gt;TCP&lt;/span&gt; &lt;span class="o"&gt;*:&lt;/span&gt;&lt;span class="n"&gt;rsync&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;LISTEN&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -87,7 +87,7 @@
 
 &lt;p&gt;来到客户端机器，通过rsync命令同步服务器端文件夹。
 简单语法通过man命令来查询：&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="n"&gt;SYNOPSIS&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;SYNOPSIS&lt;/span&gt;
    &lt;span class="n"&gt;rsync&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;OPTION&lt;/span&gt;&lt;span class="p"&gt;]...&lt;/span&gt; &lt;span class="n"&gt;SRC&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;SRC&lt;/span&gt;&lt;span class="p"&gt;]...&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;USER&lt;/span&gt;&lt;span class="err"&gt;@&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="n"&gt;HOST&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;DEST&lt;/span&gt;
 
    &lt;span class="n"&gt;rsync&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;OPTION&lt;/span&gt;&lt;span class="p"&gt;]...&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;USER&lt;/span&gt;&lt;span class="err"&gt;@&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="n"&gt;HOST&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;SRC&lt;/span&gt; &lt;span class="n"&gt;DEST&lt;/span&gt;
@@ -106,7 +106,7 @@
 
 &lt;p&gt;来看rsync的一些基本概念：&lt;/p&gt;
 &lt;p&gt;rsync有六种不同的工作模式：&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="mf"&gt;1.&lt;/span&gt; &lt;span class="err"&gt;拷贝本地文件；当&lt;/span&gt;&lt;span class="n"&gt;SRC&lt;/span&gt;&lt;span class="err"&gt;和&lt;/span&gt;&lt;span class="n"&gt;DES&lt;/span&gt;&lt;span class="err"&gt;路径信息都不包含有单个冒号&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;:&amp;quot;&lt;/span&gt;&lt;span class="err"&gt;分隔符时就启动这种工作模式。&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="mf"&gt;1.&lt;/span&gt; &lt;span class="err"&gt;拷贝本地文件；当&lt;/span&gt;&lt;span class="n"&gt;SRC&lt;/span&gt;&lt;span class="err"&gt;和&lt;/span&gt;&lt;span class="n"&gt;DES&lt;/span&gt;&lt;span class="err"&gt;路径信息都不包含有单个冒号&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;:&amp;quot;&lt;/span&gt;&lt;span class="err"&gt;分隔符时就启动这种工作模式。&lt;/span&gt;
 &lt;span class="mf"&gt;2.&lt;/span&gt; &lt;span class="err"&gt;使用一个远程&lt;/span&gt;&lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="err"&gt;程序（如&lt;/span&gt;&lt;span class="n"&gt;rsh&lt;/span&gt;&lt;span class="err"&gt;、&lt;/span&gt;&lt;span class="n"&gt;ssh&lt;/span&gt;&lt;span class="err"&gt;）来实现将本地机器的内容拷贝到远程机器。当&lt;/span&gt;&lt;span class="n"&gt;DST&lt;/span&gt;&lt;span class="err"&gt;路径地址包含单个冒号&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;:&amp;quot;&lt;/span&gt;&lt;span class="err"&gt;分隔符时启动该模式。&lt;/span&gt;
 &lt;span class="mf"&gt;3.&lt;/span&gt; &lt;span class="err"&gt;使用一个远程&lt;/span&gt;&lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="err"&gt;程序（如&lt;/span&gt;&lt;span class="n"&gt;rsh&lt;/span&gt;&lt;span class="err"&gt;、&lt;/span&gt;&lt;span class="n"&gt;ssh&lt;/span&gt;&lt;span class="err"&gt;）来实现将远程机器的内容拷贝到本地机器。当&lt;/span&gt;&lt;span class="n"&gt;SRC&lt;/span&gt;&lt;span class="err"&gt;地址路径包含单个冒号&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;:&amp;quot;&lt;/span&gt;&lt;span class="err"&gt;分隔符时启动该模式。&lt;/span&gt;
 &lt;span class="mf"&gt;4.&lt;/span&gt; &lt;span class="err"&gt;从远程&lt;/span&gt;&lt;span class="n"&gt;rsync&lt;/span&gt;&lt;span class="err"&gt;服务器中拷贝文件到本地机。当&lt;/span&gt;&lt;span class="n"&gt;SRC&lt;/span&gt;&lt;span class="err"&gt;路径信息包含&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;::&amp;quot;&lt;/span&gt;&lt;span class="err"&gt;分隔符时启动该模式。&lt;/span&gt;
@@ -116,7 +116,7 @@
 
 
 &lt;p&gt;rsync中的参数&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;r&lt;/span&gt; &lt;span class="err"&gt;是递归&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;r&lt;/span&gt; &lt;span class="err"&gt;是递归&lt;/span&gt;
 &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;l&lt;/span&gt; &lt;span class="err"&gt;是链接文件，意思是拷贝链接文件；&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;p&lt;/span&gt; &lt;span class="err"&gt;表示保持文件原有权限；&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;t&lt;/span&gt; &lt;span class="err"&gt;保持文件原有时间；&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;g&lt;/span&gt; &lt;span class="err"&gt;保持文件原有用户组；&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;o&lt;/span&gt; &lt;span class="err"&gt;保持文件原有属主；&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;D&lt;/span&gt; &lt;span class="err"&gt;相当于块设备文件；&lt;/span&gt;
 &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;z&lt;/span&gt; &lt;span class="err"&gt;传输时压缩；&lt;/span&gt;
 &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;P&lt;/span&gt; &lt;span class="err"&gt;传输进度；&lt;/span&gt;
@@ -130,7 +130,7 @@
 
 
 &lt;p&gt;首先列出rsync服务器端提供的同步内容：&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="cp"&gt;# rsync  root@172.29.175.193::  #通常需要加上 --list-only 参数，视版本而定&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;# rsync  root@172.29.175.193::  #通常需要加上 --list-only 参数，视版本而定&lt;/span&gt;
 
 &lt;span class="o"&gt;++++++++++++++++++++++++++++++++++++++++++++++&lt;/span&gt;
   &lt;span class="n"&gt;Welcome&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;use&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;dywu&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt; &lt;span class="n"&gt;rsync&lt;/span&gt; &lt;span class="n"&gt;services&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;
@@ -142,15 +142,17 @@
 
 
 &lt;p&gt;出现了服务器端设定好的文件夹资源，说明配置成功，接下来开始同步&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="cp"&gt;# rsync -avzP root@172.29.175.193::rhelshtool rhelshtool  &lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;# rsync -avzP root@172.29.175.193::rhelshtool rhelshtool  &lt;/span&gt;
 &lt;span class="o"&gt;++++++++++++++++++++++++++++++++++++++++++++++&lt;/span&gt;
   &lt;span class="n"&gt;Welcome&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;use&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;dywu&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt; &lt;span class="n"&gt;rsync&lt;/span&gt; &lt;span class="n"&gt;services&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;
            &lt;span class="mi"&gt;2013&lt;/span&gt;&lt;span class="o"&gt;--??&lt;/span&gt;
   &lt;span class="o"&gt;++++++++++++++++++++++++++++++++++++++++++++++&lt;/span&gt;
 
+
 &lt;span class="nl"&gt;Password:&lt;/span&gt;
 
 &lt;span class="cp"&gt;#此处输入rsync.secrets中设定好的密码。&lt;/span&gt;
+
 
 &lt;span class="n"&gt;receiving&lt;/span&gt; &lt;span class="n"&gt;file&lt;/span&gt; &lt;span class="n"&gt;list&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt;
 &lt;span class="mi"&gt;233&lt;/span&gt; &lt;span class="n"&gt;files&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;consider&lt;/span&gt;
@@ -185,7 +187,7 @@
 &lt;p&gt;命令中若带有 --delete 参数，则表示客户端上的数据要与服务器端完全一致，如果目录中有服务器上不存在的文件，则删除。最终目的是让目录上的数据完全与服务器上保持一致；用的时候要 小心点，最好不要把已经有重要数所据的目录，当做本地更新目录，否则会把你的数据全部删除。&lt;/p&gt;
 &lt;p&gt;生产环境下经常会将rsync配置为cron job，此时需要加上 --password-file 参数。&lt;/p&gt;
 &lt;p&gt;当我们以root用户登录rsync服务器同步数据时，密码将读取rsyncd.secrets这个文件。这个文件内容只是root用户的密码。我们要如下做；&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="c"&gt;# touch rsyncd.secrets&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# touch rsyncd.secrets&lt;/span&gt;
 &lt;span class="c"&gt;# chmod 600 rsyncd.secrets          #注意权限设置&lt;/span&gt;
 &lt;span class="c"&gt;# echo &amp;quot;dywu&amp;quot;&amp;gt; rsyncd.secrets&lt;/span&gt;
 
@@ -238,28 +240,28 @@
 是否有日志可以查看?. （比如Loggly、Airbrake、 Graylog…）
 最后两个是最方便的信息来源，不过别抱太大希望，基本上它们都不会有。只能再继续摸索了。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;二、有谁在?&lt;/strong&gt;&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;w&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;w&lt;/span&gt;
 &lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;last&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;用这两个命令看看都有谁在线，有哪些用户访问过。这不是什么关键步骤，不过最好别在其他用户正干活的时候来调试系统。有道是一山不容二虎嘛。（One cook in the kitchen is enough.）&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;三、之前发生了什么?&lt;/strong&gt;&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;history&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;history&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;查看一下之前服务器上执行过的命令。看一下总是没错的，加上前面看的谁登录过的信息，应该有点用。另外作为admin要注意，不要利用自己的权限去侵犯别人的隐私哦。&lt;/p&gt;
 &lt;p&gt;到这里先提醒一下，等会你可能会需要更新 &lt;code&gt;HISTTIMEFORMAT&lt;/code&gt; 环境变量来显示这些命令被执行的时间。对要不然光看到一堆不知道啥时候执行的命令，同样会令人抓狂的。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;四、现在在运行的进程是啥?&lt;/strong&gt;&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;pstree&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;pstree&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;
 &lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;ps&lt;/span&gt; &lt;span class="n"&gt;aux&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;这都是查看现有进程的。 &lt;code&gt;ps aux&lt;/code&gt; 的结果比较杂乱， &lt;code&gt;pstree -a&lt;/code&gt; 的结果比较简单明了，可以看到正在运行的进程及相关用户。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;五、监听的网络服务&lt;/strong&gt;&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;netstat&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;ntlp&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;netstat&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;ntlp&lt;/span&gt;
 &lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;netstat&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;nulp&lt;/span&gt;
 &lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;netstat&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;nxlp&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -270,7 +272,7 @@
 &lt;p&gt;如果服务器上有好几个Java或者Erlang什么的进程在同时运行，能够按PID分别找到每个进程就很重要了。&lt;/p&gt;
 &lt;p&gt;通常我们建议每台服务器上运行的服务少一点，必要时可以增加服务器。如果你看到一台服务器上有三四十个监听端口开着，那还是做个记录，回头有空的时候清理一下，重新组织一下服务器。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;六、CPU 和内存&lt;/strong&gt;&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;free&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;free&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt;
 &lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;uptime&lt;/span&gt;
 &lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;top&lt;/span&gt;
 &lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;htop&lt;/span&gt;
@@ -282,7 +284,7 @@
 还有剩余的CPU吗? 服务器是几核的? 是否有某些CPU核负载过多了?
 服务器最大的负载来自什么地方? 平均负载是多少?&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;七、硬件&lt;/strong&gt;&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;lspci&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;lspci&lt;/span&gt;
 &lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;dmidecode&lt;/span&gt;
 &lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;ethtool&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -292,7 +294,7 @@
 &lt;p&gt;找到RAID 卡 (是否带BBU备用电池?)、 CPU、空余的内存插槽。根据这些情况可以大致了解硬件问题的来源和性能改进的办法。
 网卡是否设置好? 是否正运行在半双工状态? 速度是10MBps? 有没有 TX/RX 报错?&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;八、IO 性能&lt;/strong&gt;&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;iostat&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;kx&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;iostat&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;kx&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
 &lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;vmstat&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;
 &lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;mpstat&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;
 &lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;dstat&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;top&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;io&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;top&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;bio&lt;/span&gt;
@@ -305,7 +307,7 @@
 CPU被谁占用：系统进程? 用户进程? 虚拟机?
 &lt;code&gt;dstat&lt;/code&gt; 是我的最爱。用它可以看到谁在进行 IO： 是不是MySQL吃掉了所有的系统资源? 还是你的PHP进程?&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;九、挂载点 和 文件系统&lt;/strong&gt;&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;mount&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;mount&lt;/span&gt;
 &lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;cat&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;fstab&lt;/span&gt;
 &lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;vgs&lt;/span&gt;
 &lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;pvs&lt;/span&gt;
@@ -322,7 +324,7 @@ CPU被谁占用：系统进程? 用户进程? 虚拟机?
 是否有大文件被删除但没有清空?
 如果磁盘空间有问题，你是否还有空间来扩展一个分区？&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;十、内核、中断和网络&lt;/strong&gt;&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;sysctl&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;grep&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;sysctl&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;grep&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt;
 &lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;cat&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;proc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;interrupts&lt;/span&gt;
 &lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;cat&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;proc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;net&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;ip_conntrack&lt;/span&gt; &lt;span class="cm"&gt;/* may take some time on busy servers */&lt;/span&gt;
 &lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;netstat&lt;/span&gt;
@@ -337,7 +339,7 @@ SWAP交换的设置是什么？对于工作站来说&lt;code&gt;swappinness&lt;/
 如果要显示所有存在的连接，&lt;code&gt;netstat&lt;/code&gt; 会比较慢， 你可以先用 &lt;code&gt;ss&lt;/code&gt; 看一下总体情况。
 你还可以看一下 &lt;code&gt;Linux TCP tuning&lt;/code&gt; 了解网络性能调优的一些要点。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;十一、系统日志和内核消息&lt;/strong&gt;&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;dmesg&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;dmesg&lt;/span&gt;
 &lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;less&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;messages&lt;/span&gt;
 &lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;less&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;secure&lt;/span&gt;
 &lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;less&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;auth&lt;/span&gt;
@@ -348,7 +350,7 @@ SWAP交换的设置是什么？对于工作站来说&lt;code&gt;swappinness&lt;/
 看看是否有硬件错误或文件系统错误?
 分析是否能将这些错误事件和前面发现的疑点进行时间上的比对。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;十二、定时任务&lt;/strong&gt;&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;ls&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;cron&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;cat&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;ls&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;cron&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;cat&lt;/span&gt;
 &lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;user&lt;/span&gt; &lt;span class="n"&gt;in&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cat&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;passwd&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;cut&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;f1&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="n"&gt;crontab&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;l&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;u&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;done&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -375,39 +377,39 @@ SWAP交换的设置是什么？对于工作站来说&lt;code&gt;swappinness&lt;/
 &lt;p&gt;&lt;strong&gt;自己的系统： &lt;code&gt;Mac OSX 10.8.3&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;搭建的过程和Linux环境下基本相同。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;首先安装&lt;code&gt;PIP&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;curl&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;O&lt;/span&gt; &lt;span class="n"&gt;https&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="c1"&gt;//raw.github.com/pypa/pip/master/contrib/get-pip.py&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;curl&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;O&lt;/span&gt; &lt;span class="n"&gt;https&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="c1"&gt;//raw.github.com/pypa/pip/master/contrib/get-pip.py&lt;/span&gt;
 &lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt; &lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;pip&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;py&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;&lt;strong&gt;安装pelican以及markdown&lt;/strong&gt;&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;pip&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="n"&gt;pelican&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;pip&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="n"&gt;pelican&lt;/span&gt;
 &lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;pip&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="n"&gt;Markdown&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;&lt;strong&gt;建立blog目录&lt;/strong&gt;&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;mkdir&lt;/span&gt; &lt;span class="n"&gt;myblog&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;mkdir&lt;/span&gt; &lt;span class="n"&gt;myblog&lt;/span&gt;
 &lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;cd&lt;/span&gt; &lt;span class="n"&gt;myblog&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;&lt;strong&gt;开始创建&lt;/strong&gt;&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;pelican&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;quickstart&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;pelican&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;quickstart&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;基本按照提示设置就可以，稍后可以在pelicanconf.py文件中手动修改。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Github上的准备&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;在Github上创建一个新项目，把这个项目clone到myblog文件夹下。然后按照Github的规定建立一个没有父节点的分支gh-pages。&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;checkout&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;orphan&lt;/span&gt; &lt;span class="n"&gt;gh&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;pages&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;checkout&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;orphan&lt;/span&gt; &lt;span class="n"&gt;gh&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;pages&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;&lt;strong&gt;完工&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;然后就可以利用pelican写博客了。以markdown举例：&lt;/p&gt;
 &lt;p&gt;进入content目录，创建一个md文件，写入内容&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="n"&gt;Title&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;My&lt;/span&gt; &lt;span class="kd"&gt;super&lt;/span&gt; &lt;span class="n"&gt;title&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Title&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;My&lt;/span&gt; &lt;span class="kd"&gt;super&lt;/span&gt; &lt;span class="n"&gt;title&lt;/span&gt;
 &lt;span class="n"&gt;Date&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;2010&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;12&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;03&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;20&lt;/span&gt;
 &lt;span class="n"&gt;Category&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Python&lt;/span&gt;
 &lt;span class="n"&gt;Tags&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;pelican&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;publishing&lt;/span&gt;
@@ -420,12 +422,12 @@ SWAP交换的设置是什么？对于工作站来说&lt;code&gt;swappinness&lt;/
 
 
 &lt;p&gt;保存退出，用如下命令发布。&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;pelican&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="n"&gt;pelicanconf&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;py&lt;/span&gt; &lt;span class="n"&gt;content&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;o&lt;/span&gt; &lt;span class="n"&gt;myblog&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;pelican&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="n"&gt;pelicanconf&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;py&lt;/span&gt; &lt;span class="n"&gt;content&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;o&lt;/span&gt; &lt;span class="n"&gt;myblog&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;pelican会将content中的元文件编译为html的静态页面，进入myblog子目录，提交到Github。&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;add&lt;/span&gt; &lt;span class="p"&gt;.&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;add&lt;/span&gt; &lt;span class="p"&gt;.&lt;/span&gt;
 &lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;commit&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;first blog&amp;quot;&lt;/span&gt;
 &lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;push&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;u&lt;/span&gt; &lt;span class="n"&gt;origin&lt;/span&gt; &lt;span class="n"&gt;gh&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;pages&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -433,7 +435,7 @@ SWAP交换的设置是什么？对于工作站来说&lt;code&gt;swappinness&lt;/
 
 &lt;p&gt;访问访问&lt;code&gt;http://username.github.com/myblog/&lt;/code&gt;就可以看到Blog。&lt;/p&gt;
 &lt;p&gt;pelican还支持很多的主题以及插件的应用， 参考文档便可以简单配置。
-相比于WP，pelican发布blog稍显繁琐，同时有多个工作环境的情况下也需要一直同步内容。不过整体思路还是非常值得肯定的。适合所有喜爱尝试，不怕麻烦的人们。&lt;/p&gt;</summary><category term="Git"></category><category term="Python"></category></entry><entry><title>Stack Edit</title><link href="http://www.isciro.com/stack-edit.html" rel="alternate"></link><updated>2013-04-02T16:43:00+08:00</updated><author><name>DennyW</name></author><id>tag:www.isciro.com,2013-04-02:stack-edit.html</id><summary type="html">&lt;p&gt;发现了一个很有趣的在线MD编辑工具，貌似还能推送到&lt;code&gt;Github&lt;/code&gt;里，尝试一下。&lt;/p&gt;</summary></entry><entry><title>Markdown test</title><link href="http://www.isciro.com/markdown-test.html" rel="alternate"></link><updated>2013-03-06T16:21:00+08:00</updated><author><name>DennyW</name></author><id>tag:www.isciro.com,2013-03-06:markdown-test.html</id><summary type="html">&lt;h1&gt;This is a Markdown test.&lt;/h1&gt;
+相比于WP，pelican发布blog稍显繁琐，同时有多个工作环境的情况下也需要一直同步内容。不过整体思路还是非常值得肯定的。适合所有喜爱尝试，不怕麻烦的人们。&lt;/p&gt;</summary><category term="Git"></category><category term="Python"></category></entry><entry><title>Stack Edit</title><link href="http://www.isciro.com/stack-edit.html" rel="alternate"></link><updated>2013-04-02T16:43:00+08:00</updated><author><name>DennyW</name></author><id>tag:www.isciro.com,2013-04-02:stack-edit.html</id><summary type="html">&lt;p&gt;发现了一个很有趣的在线MD编辑工具，貌似还能推送到&lt;code&gt;Github&lt;/code&gt;里，尝试一下。&lt;/p&gt;</summary></entry><entry><title>Stack Edit</title><link href="http://www.isciro.com/stack-edit.html" rel="alternate"></link><updated>2013-04-02T16:43:00+08:00</updated><author><name>DennyW</name></author><id>tag:www.isciro.com,2013-04-02:stack-edit.html</id><summary type="html">&lt;p&gt;test!&lt;/p&gt;</summary></entry><entry><title>Markdown test</title><link href="http://www.isciro.com/markdown-test.html" rel="alternate"></link><updated>2013-03-06T16:21:00+08:00</updated><author><name>DennyW</name></author><id>tag:www.isciro.com,2013-03-06:markdown-test.html</id><summary type="html">&lt;h1&gt;This is a Markdown test.&lt;/h1&gt;
 &lt;h4&gt;by &lt;a href="http://www.marukohome.com"&gt;DennyW&lt;/a&gt;&lt;/h4&gt;
 &lt;hr /&gt;
 &lt;h1&gt;This is H1&lt;/h1&gt;
@@ -465,7 +467,7 @@ SWAP交换的设置是什么？对于工作站来说&lt;code&gt;swappinness&lt;/
 &lt;hr /&gt;
 &lt;h3&gt;Test code block:&lt;/h3&gt;
 &lt;p&gt;This is an example of Perl script:&lt;/p&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="k"&gt;foreach&lt;/span&gt; &lt;span class="nv"&gt;@array&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;foreach&lt;/span&gt; &lt;span class="nv"&gt;@array&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
     &lt;span class="k"&gt;my&lt;/span&gt; &lt;span class="nv"&gt;$def&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nv"&gt;$_&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
     &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;$def&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
         &lt;span class="nv"&gt;$def&lt;/span&gt; &lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
@@ -503,7 +505,7 @@ SWAP交换的设置是什么？对于工作站来说&lt;code&gt;swappinness&lt;/
 &lt;hr /&gt;
 &lt;h1&gt;Done!&lt;/h1&gt;
 &lt;h3&gt;Below is the code:&lt;/h3&gt;
-&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="c1"&gt;#This is a Markdown test. &lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;#This is a Markdown test. &lt;/span&gt;
 &lt;span class="c1"&gt;####by [DennyW](http://www.marukohome.com)&lt;/span&gt;
 
 &lt;span class="o"&gt;***&lt;/span&gt;
